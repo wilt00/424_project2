@@ -44,11 +44,11 @@ function fetch(url,filename){
     });
 }
 
-async function createDir(dirName){
+function createDir(dirName){
     fs.existsSync(dirName) || fs.mkdirSync(dirName);
 }
 
-async function scrapeRange(prefix,first,last){
+function scrapeRange(prefix,first,last){
     createDir(outputDir);
     let dirPath =`${outputDir}/${prefix}`;
     createDir(dirPath);
