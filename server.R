@@ -66,11 +66,16 @@ shinyServer(function(input, output, session) {
   output$stackedChartAQI <- renderPlot({
     stackedBarChart(input$selState, input$selCOunty)
   })
+
+  output$multiMap <- renderLeaflet({
+    (worstXCountiesMap(input$selYear, input$numCounties, input$mapType))
+  })
+
   # About dialog
   observeEvent(input$showAboutModal, {
     showModal(modalDialog(
       title="About this Page",
-      p("Author: Will Toher"),
+      p("Author: Dylan Vo, Wilfred Bedu, Will Toher"),
       p("Data Source: United States Environmental Protection Agency"),
       p("Libraries Used: "),
       p("- Shiny - Presentation"),
