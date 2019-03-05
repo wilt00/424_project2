@@ -73,14 +73,7 @@ table_month_AQI <-function(selectedState,selectedCounty){
   df <- data.frame(barChart)
   rownames(df) <-df$Month
   df$Month <- NULL
-  datatable(df,
-            options = list(
-            columnDefs = list(list(className= 'dt-center', targets=0:6)),
-            pageLength = 12,
-            searching = FALSE,
-            lengthChange = FALSE,
-            rownames= TRUE)
-  )
+  return(df)
 }
 
 #this is the line chart
@@ -90,7 +83,7 @@ daily_aqi_line <- function(selectedState, selectedCounty){
   line <- ggplot(region,aes(x=Date,y=AQI, group=1,label=Defining.Parameter)) + geom_line()+geom_point(color='red') +
     theme(axis.text.x=element_blank(),
           axis.ticks.x=element_blank()) + xlab("Days From January to December")
-  ggplotly(line)
+  return(ggplotly(line))
 
 }
 
