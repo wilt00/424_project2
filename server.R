@@ -57,7 +57,15 @@ shinyServer(function(input, output, session) {
   output$countyMap <- renderLeaflet({
     (mapCounty(input$selState, input$selCounty))
   })
-
+  output$lineDailyAQI <- renderPlot({
+    daily_aqi_line(input$selState, input$selCOunty)
+  })
+  output$tableAQI <- shiny::renderDataTable({
+    table_month_AQI(input$selState, input$selCOunty)
+  })
+  output$stackedChartAQI <- renderPlot({
+    stackedBarChart(input$selState, input$selCOunty)
+  })
   # About dialog
   observeEvent(input$showAboutModal, {
     showModal(modalDialog(

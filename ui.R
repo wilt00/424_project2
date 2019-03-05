@@ -1,6 +1,6 @@
 library(leaflet)
 source("plot.R")
-
+source("chart.R")
 countiesInitial <- getCounties("Illinois")
 
 shinyUI(fluidPage(
@@ -56,9 +56,11 @@ shinyUI(fluidPage(
                            splitLayout(
                              dataTableOutput("pollutantTable")
                            )),
-                  tabPanel("Temp", leafletOutput("countyMap"),
+                  tabPanel("Temp",
                            splitLayout(
-
+                            plotOutput("lineDailyAQI"),
+                            plotOutput("tableAQI"),
+                            plotOutput("stackedChartAQI")
                            ))
         )
       )
