@@ -1,6 +1,6 @@
 library(leaflet)
 source("plot.R")
-source("chart.R")
+source("charts.R")
 countiesInitial <- getCounties("Illinois")
 
 shinyUI(fluidPage(
