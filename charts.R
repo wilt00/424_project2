@@ -15,28 +15,6 @@ getCounties <- function(selectedState) {
   daily_state <- subset(data, State.Name == selectedState)
   return(sapply(unique(daily_state$County.Name), as.character))
 }
-region <- subset(data,State.Name == "Illinois" &  county.Name=="Cook")
-months <- c('01','02','03','04','05','06','07','08','09','10','11','12')
-barChart <- data.frame(Month = character(),
-                       Good = numeric(),
-                       Moderate = numeric(),
-                       UnhealthyforSensitiveGroups =numeric(),
-                       VeryUnhealthy = numeric(),
-                       Unhealthy = numeric(),
-                       Hazardous = numeric())
-for(month in months){
-  monthinLoop <- subset(region,format.Date(Date,"%m")== month)
-  name <- getMonth(month)
-  newRow <- data.frame(Month = name,
-                       Good = nrow(subset(monthinLoop, Category=="Good")),
-                       Moderate = nrow(subset(monthinLoop, Category=="Moderate")),
-                       UnhealthyforSensitiveGroups =nrow(subset(monthinLoop, Category=="Unhealthy for Sensitive Groups")),
-                       VeryUnhealthy= nrow(subset(monthinLoop, Category=="Very Unhealthy")),
-                       Unhealthy= nrow(subset(monthinLoop, Category=="Unhealthy")),
-                       Hazardous=nrow(subset(monthinLoop, Category=="Hazardous")))
-  barChart<- rbind(barChart,newRow)
-}
-
 #function to convert month number to a name
 getMonth <- function(month){
   if(month=='01'){
@@ -65,6 +43,29 @@ getMonth <- function(month){
     return("December")
   }
 }
+region <- subset(data,State.Name == "Illinois" &  county.Name=="Cook")
+months <- c('01','02','03','04','05','06','07','08','09','10','11','12')
+barChart <- data.frame(Month = character(),
+                       Good = numeric(),
+                       Moderate = numeric(),
+                       UnhealthyforSensitiveGroups =numeric(),
+                       VeryUnhealthy = numeric(),
+                       Unhealthy = numeric(),
+                       Hazardous = numeric())
+for(month in months){
+  monthinLoop <- subset(region,format.Date(Date,"%m")== month)
+  name <- getMonth(month)
+  newRow <- data.frame(Month = name,
+                       Good = nrow(subset(monthinLoop, Category=="Good")),
+                       Moderate = nrow(subset(monthinLoop, Category=="Moderate")),
+                       UnhealthyforSensitiveGroups =nrow(subset(monthinLoop, Category=="Unhealthy for Sensitive Groups")),
+                       VeryUnhealthy= nrow(subset(monthinLoop, Category=="Very Unhealthy")),
+                       Unhealthy= nrow(subset(monthinLoop, Category=="Unhealthy")),
+                       Hazardous=nrow(subset(monthinLoop, Category=="Hazardous")))
+  barChart<- rbind(barChart,newRow)
+}
+
+
 
 
 #This should display the table
