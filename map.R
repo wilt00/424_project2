@@ -231,3 +231,15 @@ worstPM10CountiesMap <- function(selectedYear, numDisplayed) {
     guides(fill=FALSE) +
     theme_nothing()
 }
+
+worstXCountiesMap <- function(selectedYear, numDisplayed, mapType) {
+  switch(mapType,
+         AQI = worstAQICountiesMap(selectedYear, numDisplayed),
+         Ozone = worstOzoneCountiesMap(selectedYear, numDisplayed),
+         SO2 = worstSO2CountiesMap(selectedYear,numDisplayed),
+         NO2 = worstNO2CountiesMap(selectedYear,numDisplayed),
+         PM25 = worstPM25CountiesMap(selectedYear,numDisplayed),
+         PM10 = worstPM10CountiesMap(selectedYear,numDisplayed),
+         CO = worstCOCountiesMap(selectedYear,numDisplayed)
+  )
+}

@@ -58,6 +58,10 @@ shinyServer(function(input, output, session) {
     (mapCounty(input$selState, input$selCounty))
   })
 
+  output$multiMap <- renderLeaflet({
+    (worstXCountiesMap(input$selYear, input$numCounties, input$mapType))
+  })
+
   # About dialog
   observeEvent(input$showAboutModal, {
     showModal(modalDialog(
