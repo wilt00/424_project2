@@ -14,6 +14,10 @@
         "array-callback-return": "error",
         "array-element-newline": "error",
         "arrow-body-style": "error",
+        "arrow-parens": [
+            "error",
+            "always"
+        ],
         "arrow-spacing": [
             "error",
             {
@@ -28,25 +32,16 @@
         "camelcase": "error",
         "capitalized-comments": "off",
         "class-methods-use-this": "error",
-        "comma-dangle": [
-            "error",
-            "always-multiline"
-        ],
+        "comma-dangle": "error",
         "comma-spacing": "off",
         "comma-style": "error",
         "complexity": "error",
         "computed-property-spacing": "error",
         "consistent-return": "error",
         "consistent-this": "error",
-        "curly": [
-            "error",
-            "multi-line"
-        ],
+        "curly": "error",
         "default-case": "error",
-        "dot-location": [
-            "error",
-            "property"
-        ],
+        "dot-location": "error",
         "dot-notation": "error",
         "eol-last": "error",
         "eqeqeq": "off",
@@ -69,16 +64,7 @@
             "error",
             "beside"
         ],
-        "indent": [
-            "error",
-            4,
-            {
-                "FunctionDeclaration": {
-                    "body": 1,
-                    "parameters": 1
-                }
-            }
-        ],
+        "indent": "error",
         "indent-legacy": "error",
         "init-declarations": "error",
         "jsx-quotes": "error",
@@ -106,7 +92,7 @@
         "new-parens": "error",
         "newline-after-var": "off",
         "newline-before-return": "off",
-        "newline-per-chained-call": "off",
+        "newline-per-chained-call": "error",
         "no-alert": "error",
         "no-array-constructor": "error",
         "no-async-promise-executor": "error",
@@ -222,7 +208,7 @@
         "padded-blocks": "off",
         "padding-line-between-statements": "error",
         "prefer-arrow-callback": "off",
-        "prefer-const": "error",
+        "prefer-const": "off",
         "prefer-destructuring": "error",
         "prefer-numeric-literals": "error",
         "prefer-object-spread": "error",
@@ -231,10 +217,7 @@
         "prefer-rest-params": "error",
         "prefer-spread": "error",
         "prefer-template": "error",
-        "quote-props": [
-            "error",
-            "as-needed"
-        ],
+        "quote-props": "error",
         "quotes": "off",
         "radix": "error",
         "require-atomic-updates": "error",
