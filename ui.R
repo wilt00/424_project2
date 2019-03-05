@@ -51,12 +51,15 @@ shinyUI(fluidPage(
                              plotOutput("pm25Pie"),
                              plotOutput("pm10Pie"),
                              plotOutput("so2Pie")
-                           ),
+                           )),
                   tabPanel("Map", leafletOutput("countyMap"),
                            splitLayout(
                              dataTableOutput("pollutantTable")
+                           )),
+                  tabPanel("Temp", leafletOutput("countyMap"),
+                           splitLayout(
+
                            ))
-          )
         )
       )
     )
