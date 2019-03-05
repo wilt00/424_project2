@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
   observeEvent(input$showAboutModal, {
     showModal(modalDialog(
       title="About this Page",
-      p("Author: Will Toher"),
+      p("Author: Dylan Vo, Wilfred Bedu, Will Toher"),
       p("Data Source: United States Environmental Protection Agency"),
       p("Libraries Used: "),
       p("- Shiny - Presentation"),
