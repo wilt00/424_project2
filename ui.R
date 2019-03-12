@@ -65,11 +65,11 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                           dataTableOutput("pollutantTable"),
                           leafletOutput("multiMap"),
                           sliderInput(
-                            "numCounties",
+                            label="numCounties",
+                            inputId = "num",
                             min = 1,
                             max = 500,
-                            value = 1,
-                            selected = 100
+                            value = 100
                           ),
                           selectInput(
                             "mapType",
