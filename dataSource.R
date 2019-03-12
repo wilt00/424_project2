@@ -2,36 +2,6 @@ library(mapdata)
 #repository of shared datasources and functions
 #all read values should be done here
 
-########################
-##Daily AQI BY Country##
-########################
-
-dabc <- read.csv("daily_aqi_by_county_2018.csv")
-#returns countrie on a given state
-getCounties <- function(selectedState) {
-  daily_state <- subset(dabc, State.Name == selectedState)
-  return(sapply(unique(daily_state$County.Name), as.character))
-}
-
-
-#########################
-##Annual AQI By Country##
-#########################
-# Read in Average AQI By County info from files
-#aabc_files <- list.files('./aabc', full.names=TRUE)
-#aabc_data <- lapply(aabc_files, read.csv)
-#aabc <- do.call(rbind, aabc_data)
-aabc <- read.csv("./aabc/annual_aqi_by_county_2018.csv")
-
-
-##############
-## AQI_Sites##
-##############
-
-# Read in listing of test site locations
-sites <- read.csv("aqs_sites.csv")[,c("Latitude", "Longitude", "State.Name", "County.Name")]
-sites <- subset(sites, Latitude != 0.0 & Longitude != 0.0)
-
 #######################
 ##General Shared data##
 #######################
@@ -39,6 +9,11 @@ map_data_states <- map_data("state")
 states <- sapply(unique(map_data_states$region), as.character)
 counties <- map_data("county")
 
+#returns countie on a given state
+getCounties <- function(selectedState) {
+  counties_by_state <- subset(counties, counties$region == selectedState ,select = (subregion))
+  return(sapply(unique(counties_by_state$subregion), as.character))
+}
 
 #function to convert month number to a name
 getMonth <- function(month){
@@ -68,4 +43,32 @@ getMonth <- function(month){
     return("December")
   }
 }
+
+
+
+
+########################
+##Daily AQI BY Country##
+########################
+
+dabc <- read.csv("daily_aqi_by_county_2018.csv")
+
+
+#########################
+##Annual AQI By Country##
+#########################
+# Read in Average AQI By County info from files
+#aabc_files <- list.files('./aabc', full.names=TRUE)
+#aabc_data <- lapply(aabc_files, read.csv)
+#aabc <- do.call(rbind, aabc_data)
+aabc <- read.csv("./aabc/annual_aqi_by_county_2018.csv")
+
+
+##############
+## AQI_Sites##
+##############
+
+# Read in listing of test site locations
+sites <- read.csv("aqs_sites.csv")[,c("Latitude", "Longitude", "State.Name", "County.Name")]
+sites <- subset(sites, Latitude != 0.0 & Longitude != 0.0)
 
