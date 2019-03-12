@@ -1,7 +1,7 @@
 
 library(shiny);
 
-shinyServer(function(input, output, session) {
+server <- shinyServer(function(input, output, session) {
   observe({
     # Update list of counties on state changed
     updateSelectInput(session, "selCounty", choices=getCounties(input$selState), selected = "Cook")
@@ -88,3 +88,5 @@ shinyServer(function(input, output, session) {
     ))
   })
 })
+
+server
