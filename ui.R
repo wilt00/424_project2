@@ -4,7 +4,7 @@ source("map.R")
 
 countiesInitial <- getCounties("Illinois")
 
-shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
+ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                   sidebarLayout(
                     # Sidebar panel for inputs ----
                     sidebarPanel(
@@ -87,3 +87,5 @@ shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                       )
                     )
                   )))
+
+ui
