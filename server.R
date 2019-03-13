@@ -3,8 +3,10 @@ library(shiny);
 
 server <- shinyServer(function(input, output, session) {
   observe({
+    countyList = getCounties(input$selState)
     # Update list of counties on state changed
-    updateSelectInput(session, "selCounty", choices=getCounties(input$selState), selected = "Cook")
+    updateSelectInput(session,"selCounty",choices = countyList, selected = head(countyList, 1))
+
   })
 
   output$aqiPie <- renderPlot({

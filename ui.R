@@ -18,7 +18,7 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                         sep = ""
                       ),
                       selectInput("selState", "State: ", states, selected = "Illinois"),
-                      selectInput("selCounty", "County: ", countiesInitial, selected = "Cook"),
+                      selectInput("selCounty", "County: ", getCounties("illinois")),
                       actionButton("showAboutModal", "About")
                     ),
                     mainPanel(
