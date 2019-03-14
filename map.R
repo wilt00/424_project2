@@ -4,6 +4,7 @@ library(maps)
 library(mapdata)
 library(dplyr)
 source("dataSource.R")
+source("charts.R")
 
 aabc$pctBadDays =
   with(aabc, (Unhealthy.Days + Very.Unhealthy.Days + Hazardous.Days) / Days.with.AQI)
