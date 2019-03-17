@@ -3,7 +3,7 @@
 
 
 library(feather)
-
+library(magrittr)
 
 initLog <- function(){
   cat("type, code, message",file="downloadData.log",sep="\n")
@@ -40,8 +40,8 @@ downloadByYearAndName <- function(years, dataName){
 }
 
 downloadAllData <- function(){
-  dataNames <- c("hourly_44201_","hourly_42401_","hourly_42101_","hourly_42602_","hourly_88101_","hourly_81102_","hourly_WIND_","hourly_TEMP_")
-  years <-seq(from = 1990, to = 1991)
+  dataNames <- c("daily_WIND_", "daily_TEMP_", "daily_88101_", "daily_44201_","daily_42401_","daily_42101_","daily_42602_","daily_81102_")
+  years <-seq(from = 1990, to = 2018)
   for(dataName in dataNames ){
     logStatus("INFO",dataName, "downloading file set")
     downloadByYearAndName(years, dataName)
@@ -55,7 +55,6 @@ downloadAllData <- function(){
 }
 
 
-
 dir.create("data")
 dir.create("archives")
 dir.create("feather")
@@ -67,3 +66,4 @@ download.file("https://aqs.epa.gov/aqsweb/airdata/aqs_sites.zip", "archives/aqs_
 unzip("archives/aqs_sites.zip", exdir = './data')
 aqs_data <- read.csv("data/aqs_sites.csv")
 write_feather(aqs_data, paste("feather/", "aqs_sites", ".feather", sep=""))
+
