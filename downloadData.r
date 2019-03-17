@@ -24,12 +24,15 @@ downloadAllData <- function(){
     dataByYear <- lapply(fileNames, read.csv)
     allData <- do.call(rbind, dataByYear)
     write_feather(allData, paste("feather/", dataName,".feather", sep=""))
-    allData
   }
 }
 dir.create("data")
 dir.create("archives")
 dir.create("feather")
-#download.file("https://aqs.epa.gov/aqsweb/airdata/aqs_sites.zip", "data/aqs_sites.zip")
-#unzip("data/aqs_sites.zip")
-allData <- downloadAllData()
+
+downloadAllData()
+
+download.file("https://aqs.epa.gov/aqsweb/airdata/aqs_sites.zip", "archives/aqs_sites.zip")
+unzip("archives/aqs_sites.zip", exdir = './data')
+aqs_data <- read.csv("data/aqs_sites.csv")
+write_feather(aqs_data, paste("feather/", "aqs_sites", ".feather", sep=""))
