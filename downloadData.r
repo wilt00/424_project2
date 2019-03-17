@@ -1,14 +1,35 @@
 # I used this supplemental file to download the CSVs.
 # It is not used by the Shiny application.
+library(feather)
 
-years <- seq(from=1980, to=2018)
-for(y in years) {
-  filename = paste("annual_aqi_by_county_", toString(y), ".zip", sep="")
-  url = paste("https://aqs.epa.gov/aqsweb/airdata/", filename, sep="")
-  download.file(url, filename, "libcurl")
-  unzip(filename)
-  file.remove(filename)
+downloadByYearAndName <- function(years, dataName){
+  for(y in years) {
+    filename = paste(dataName, toString(y), ".zip", sep="")
+    dest =  paste("archives/",filename,sep="")
+    if(!file.exists(dest)){
+      url = paste("https://aqs.epa.gov/aqsweb/airdata/", filename, sep="")
+      download.file(url, dest, "libcurl")
+      unzip(dest, exdir = "./data")
+    }
+  }
 }
 
-download.file("https://aqs.epa.gov/aqsweb/airdata/aqs_sites.zip", "aqs_sites.zip")
-unzip("aqs_sites.zip")
+downloadAllData <- function(){
+  dataNames <- c("hourly_44201_","hourly_42401_","hourly_42101_","hourly_42602_","hourly_88101_","hourly_81102_","hourly_WIND_","hourly_TEMP_")
+  years <-seq(from = 1990, to = 2018)
+  for(dataName in dataNames ){
+    downloadByYearAndName(years, dataName)
+    fileNames <- list.files(path ="./data",pattern= paste(dataName,"*",sep=""), full.names = TRUE)
+    print(fileNames)
+    dataByYear <- lapply(fileNames, read.csv)
+    allData <- do.call(rbind, dataByYear)
+    write_feather(allData, paste("feather/", dataName,".feather", sep=""))
+    allData
+  }
+}
+dir.create("data")
+dir.create("archives")
+dir.create("feather")
+#download.file("https://aqs.epa.gov/aqsweb/airdata/aqs_sites.zip", "data/aqs_sites.zip")
+#unzip("data/aqs_sites.zip")
+allData <- downloadAllData()
