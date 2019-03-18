@@ -9,7 +9,6 @@ daily_no2 <- processDailyPollutant(read.csv("data/daily_42602_2018.csv"))
 daily_pm25 <- processDailyPollutant(read.csv("data/daily_88101_2018.csv"))
 daily_pm10 <- processDailyPollutant(read.csv("data/daily_81102_2018.csv"))
 
-
 getStateName <- function(stateCode) {
   if (class(stateCode) == "character") {
     stateCode <- strtoi(stateCode)
@@ -48,6 +47,7 @@ pollutantHeatmap <- function(mapType, month, day) {
                  "NO2" = daily_no2,
                  "PM2.5" = daily_pm25,
                  "PM10" = daily_pm10)
+
   newData <- data.frame(countiesDataBkp)
   countiesJ@data <-
     dplyr::full_join(newData, data, by = c("STATE", "COUNTY"))

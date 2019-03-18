@@ -6,6 +6,26 @@ source("heatmap.R")
 
 
 server <- shinyServer(function(input, output, session) {
+  observeEvent(input$showAQIButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "AQITab")
+  })
+
+  observeEvent(input$showPolutantsButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "polutantTab")
+  })
+
+  observeEvent(input$showMapButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "mapTab")
+  })
+
+  observeEvent(input$showTempButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "tempTab")
+  })
+
   observe({
     countyList = getCounties(input$selState)
     # Update list of counties on state changed
