@@ -1,10 +1,8 @@
-
 library(shiny)
 
-source("plot.R")
-source("map.R")
-source("heatmap.R")
-
+# source("plot.R")
+# source("map.R")
+# source("heatmap.R")
 
 server <- shinyServer(function(input, output, session) {
   observeEvent(input$showAQIButton, {
@@ -12,9 +10,9 @@ server <- shinyServer(function(input, output, session) {
                       selected = "AQITab")
   })
 
-  observeEvent(input$showPolutantsButton, {
+  observeEvent(input$showPollutantsButton, {
     updateTabsetPanel(session, "tabset",
-                      selected = "polutantTab")
+                      selected = "pollutantTab")
   })
 
   observeEvent(input$showMapButton, {
@@ -33,7 +31,7 @@ server <- shinyServer(function(input, output, session) {
     updateSelectInput(session,
                       "selCounty",
                       choices = countyList,
-                      selected = head(countyList, 1))
+                      selected = head(countyList, 2))
   })
 
   output$aqiPie <- renderPlot({
@@ -93,6 +91,7 @@ server <- shinyServer(function(input, output, session) {
     ggplotly(daily_aqi_line(input$selYear,input$selState, input$selCounty))
   })
   output$tableAQI <- shiny::renderDataTable({
+    write("tableAQI", stderr())
     table_month_AQI(input$selYear,input$selState, input$selCounty)
   },options = list(
     columnDefs = list(list(className= 'dt-center', targets=0:6)),
@@ -102,14 +101,18 @@ server <- shinyServer(function(input, output, session) {
     rownames= TRUE)
   )
   output$stackedChartAQI <- renderPlot({
+    write("chartAQI", stderr())
     stackedBarChart(input$selYear,input$selState, input$selCounty)
   })
 
   output$multiMap <- renderPlot({
+    write(input$mapType, stderr())
+    write(input$selYear, stderr())
+    write(input$numCounties, stderr())
     (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
-  # output$heatMap <- leafletOutput({
-  #   #pollutantHeatmap(input$mapType, )
+  # output$heatmap <- renderLeaflet({
+  #   (pollutantHeatmap(input$mapType, input$heatmapDay))
   # })
 
   # About dialog

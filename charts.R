@@ -9,7 +9,7 @@ library(plotly)
 library(DT)
 library(reshape)
 library(feather)
-source("dataSource.R")
+# source("dataSource.R")
 
 #table aqi in a Dataframe
 table_month_AQI <-function(selectedYear,selectedState,selectedCounty){
@@ -48,7 +48,7 @@ daily_aqi_line <- function(selectedYear,selectedState, selectedCounty){
                    axis.ticks.x=element_blank()) + xlab("Days From January to December")
 }
 
-#this is the stacked barchart took the data and sorted it by county and 
+#this is the stacked barchart took the data and sorted it by county and
 stackedBarChart <- function(selectedYear,selectedState,selectedCounty){
   region <- subset(allDailyAQI, Year==selectedYear & tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
   barChart <- data.frame(Month = character(),
@@ -74,7 +74,7 @@ stackedBarChart <- function(selectedYear,selectedState,selectedCounty){
   dat <- melt(barChart,id.vars="Month")
   colnames(dat)[2]<-"Quality"
   ggplot(dat,aes(x=Month, y=value,fill=Quality)) + geom_bar(stat="identity") + xlab("Month")+ylab("Days")
-  
+
 }
 
 #this is the hourly aqi line chart i Divided all the data up and filtered it to only get the average of each hour
@@ -105,11 +105,9 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   hrtemp$Parameter.Name <- "Temperature"
   hrtemp$val <- hrtemp$Sample.Measurement
   hrtemp$Sample.Measurement <-NULL
-  
-  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso,hrtemp)
-  
+
+  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso)
+
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
-  
+
 }
-
-

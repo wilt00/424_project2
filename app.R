@@ -1,8 +1,6 @@
 library(shiny)
 library(leaflet)
 
-source("plot.R")
-
 countiesInitial <- getCounties("Illinois")
 
 ui <- fluidPage(
@@ -69,7 +67,7 @@ server <- function(input, output, session) {
     # Update list of counties on state changed
     updateSelectInput(session, "selCounty", choices=getCounties(input$selState), selected = "Cook")
   })
-  
+
   output$aqiPie <- renderPlot({
     aqi_pie(input$selYear, input$selState, input$selCounty)
   })
@@ -79,35 +77,35 @@ server <- function(input, output, session) {
   output$aqiTable <- shiny::renderDataTable({
     aqi_table(input$selYear, input$selState, input$selCounty)
   }, options=list(pageLength=6, dom = 't'))
-  
+
   output$coPie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "CO")
   })
-  
+
   output$no2Pie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "NO2")
   })
-  
+
   output$ozonePie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "Ozone")
   })
-  
+
   output$so2Pie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "SO2")
   })
-  
+
   output$pm25Pie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "PM2.5")
   })
-  
+
   output$pm10Pie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "PM10")
   })
-  
+
   output$pollutantBar <- renderPlot({
     pollutant_bar(input$selYear, input$selState, input$selCounty)
   })
-  
+
   output$aqiLine <- renderPlot({
     aqi_line(input$selState, input$selCounty)
   })
@@ -120,7 +118,7 @@ server <- function(input, output, session) {
   output$countyMap <- renderLeaflet({
     (mapCounty(input$selState, input$selCounty))
   })
-  
+
   # About dialog
   observeEvent(input$showAboutModal, {
     showModal(modalDialog(

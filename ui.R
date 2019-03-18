@@ -1,6 +1,7 @@
 library(leaflet)
 library(shinydashboard)
 library(plotly)
+
 AQITab <- tabPanel(
   "AQI",
   value = "AQITab",
@@ -19,9 +20,9 @@ AQITab <- tabPanel(
   )
 )
 
-polutantTab <- tabPanel(
+pollutantTab <- tabPanel(
   "Pollutants",
-  value = "polutantTab",
+  value = "pollutantTab",
   fluidRow(
     column(
       2,
@@ -71,9 +72,14 @@ polutantTab <- tabPanel(
 mapTab <- tabPanel(
   "Map",
   value = "mapTab",
+  splitLayout(
+    dataTableOutput("pollutantTable"),
+    plotOutput("multiMap")
+    # leafletOutput("heatmap")
+  ),
   sliderInput(
+    "numCounties",
     label="numCounties",
-    inputId = "num",
     min = 1,
     max = 500,
     value = 100
@@ -87,6 +93,13 @@ mapTab <- tabPanel(
     "Map: ",
     c("AQI", "CO", "NO2", "SO2", "Ozone", "PM2.5", "PM10"),
     selected = "AQI"
+  ),
+  dateInput(
+    "heatmapDay",
+    "Day (2018): ",
+    value="2018-01-01",
+    min="2018-01-01",
+    max="2018-12-31"
   )
 )
 
@@ -106,7 +119,7 @@ body <- dashboardBody(
       id = "tabset",
       type = "tabs",
       AQITab,
-      polutantTab,
+      pollutantTab,
       mapTab,
       tempTab
     )
@@ -122,21 +135,21 @@ body <- dashboardBody(
                sliderInput(
                  "selYear",
                  label = h3("Year: "),
-                 min = 1980,
+                 min = 1990,
                  max = 2018,
                  value = 1,
                  sep = ""
                )
         ),
         column(3,
-               selectInput("selState", "State: ", states, selected = "Illinois"),
-               selectInput("selCounty", "County: ", getCounties("illinois")),
+               selectInput("selState", "State: ", visualStates, selected = "Illinois"),
+               selectInput("selCounty", "County: ", getCounties("Illinois")),
                actionButton("showAboutModal", "About"),
                draggable = TRUE
         ),
         column(3,
                actionButton("showAQIButton", "AQI"),
-               actionButton("showPolutantsButton","Polutants"),
+               actionButton("showPollutantsButton","Pollutants"),
                actionButton("showMapButton", "Map"),
                actionButton("showTempButton", "Temp")
         )

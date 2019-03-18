@@ -2,7 +2,9 @@ library(ggplot2)
 library(dplyr)
 library(purrr)
 library(leaflet)
-source("dataSource.R")
+
+# if(!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 # Define function to retrieve unique counties for a given state
 getCounties <- function(selectedState) {
@@ -365,7 +367,7 @@ aqi_line <- function(selectedState, selectedCounty) {
     geom_line(aes(x = Year, y = X90th.Percentile.AQI, color = 'orange')) +
     geom_line(aes(x = Year, y = Median.AQI, color = 'green')) +
     labs(x = "Year", y = "AQI") + theme_linedraw() +
-    scale_x_continuous(limits = c(1980, 2018)) +
+    scale_x_continuous(limits = c(1990, 2018)) +
     scale_y_continuous(limits = c(0, ymax)) +
     scale_color_manual(
       name = "AQI",

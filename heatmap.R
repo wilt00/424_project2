@@ -1,4 +1,8 @@
 library(magrittr)
+library(feather)
+
+# if (!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 ## PREPROCESS
 processDailyPollutant <- function(pdata) {
@@ -8,14 +12,20 @@ processDailyPollutant <- function(pdata) {
   return(pdata)
 }
 
+# daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
+# daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
+# daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
+# daily_no2 <- processDailyPollutant(read.csv("./data/daily_42602_2018.csv"))
+# daily_pm25 <- processDailyPollutant(read.csv("./data/daily_88101_2018.csv"))
+# daily_pm10 <- processDailyPollutant(read.csv("./data/daily_81102_2018.csv"))
 
+daily_oz <- processDailyPollutant(read_feather("./feather/daily_44201_2018.csv.feather"))
+daily_so2 <- processDailyPollutant(read_feather("./feather/daily_42401_2018.csv.feather"))
+daily_co <- processDailyPollutant(read_feather("./feather/daily_42101_2018.csv.feather"))
+daily_no2 <- processDailyPollutant(read_feather("./feather/daily_42602_2018.csv.feather"))
+daily_pm25 <- processDailyPollutant(read_feather("./feather/daily_88101_2018.csv.feather"))
+daily_pm10 <- processDailyPollutant(read_feather("./feather/daily_81102_2018.csv.feather"))
 
-daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
-daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
-daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
-daily_no2 <- processDailyPollutant(read.csv("./data/daily_42602_2018.csv"))
-daily_pm25 <- processDailyPollutant(read.csv("./data/daily_88101_2018.csv"))
-daily_pm10 <- processDailyPollutant(read.csv("./data/daily_81102_2018.csv"))
 
 getStateName <- function(stateCode) {
   if (class(stateCode) == "character") {
@@ -26,11 +36,7 @@ getStateName <- function(stateCode) {
   if (identical(lname, character(0))) {
     return("??")
   }
-  aname <- strsplit(lname, " ")[[1]]
-  paste(toupper(substring(aname, 1, 1)),
-        substring(aname, 2),
-        sep = "",
-        collapse = " ")
+  capitalizeEachWord(lname)
 }
 
 countiesJ <- rgdal::readOGR("gz_2010_us_050_00_20m.json")
@@ -40,7 +46,8 @@ countiesJ@data$StateName <-
   sapply(countiesJ@data$STATE, getStateName)
 countiesDataBkp <- data.frame(countiesJ@data)
 
-pollutantHeatmap <- function(mapType, month, day) {
+
+pollutantHeatmap <- function(mapType, date) {
   data <- switch(mapType,
                  "Ozone" = daily_oz,
                  "SO2" = daily_so2,
