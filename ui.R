@@ -94,8 +94,8 @@ tempTab <- tabPanel(
   "Temp",
   value = "tempTab",
   splitLayout(
-  plotOutput("lineDailyAQI"),
-  plotOutput("tableAQI"),
+  plotlyOutput("lineDailyAQI"),
+  dataTableOutput("tableAQI"),
   plotOutput("stackedChartAQI")
   )
 )

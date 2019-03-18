@@ -8,19 +8,12 @@ library(ggrepel)
 library(plotly)
 library(DT)
 library(reshape)
+library(feather)
 source("dataSource.R")
-hr_oz_2018 <- read.csv("hourly_44201_2018.csv")
-hr_so2_2018 <- read.csv("hourly_42401_2018.csv")
-hr_co_2018 <- read.csv("hourly_42101_2018.csv")
-hr_no2_2018 <- read.csv("hourly_42602_2018.csv")
-hr_pm2_2018 <- read.csv("hourly_88101_2018.csv")
-hr_pm1_2018 <- read.csv("hourly_81102_2018.csv")
-hourly_TEMP_2018 <- read.csv("hourly_TEMP_2018.csv")
-hourly_WIND_2018 <- read.csv("hourly_WIND_2018.csv")
 
 #table aqi in a Dataframe
-table_month_AQI <-function(selectedState,selectedCounty){
-  region <- subset(dabc, tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+table_month_AQI <-function(selectedYear,selectedState,selectedCounty){
+  region <- subset(allDailyAQI, Year==selectedYear & tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
   barChart <- data.frame(Month = character(),
                          Good = numeric(),
                          Moderate = numeric(),
@@ -47,18 +40,17 @@ table_month_AQI <-function(selectedState,selectedCounty){
 
 #this is the line chart for the daily aqi
 
-daily_aqi_line <- function(selectedState, selectedCounty){
-  region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
-
+daily_aqi_line <- function(selectedYear,selectedState, selectedCounty){
+  region <- subset(allDailyAQI, Year==selectedYear & tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
   region[order(as.Date(region$Date, format="%y-%m-%d")),]
-  ggplot(region,aes(x=Date,y=AQI, group=1,label=Defining.Parameter)) + geom_line()+geom_point(color='red') +
-    theme(axis.text.x=element_blank(),
-          axis.ticks.x=element_blank()) + xlab("Days From January to December")
+  ggplot(region,aes(x=Date,y=AQI, group=1, label=Defining.Parameter)) + geom_line()+geom_point(color='red') +
+             theme(axis.text.x=element_blank(),
+                   axis.ticks.x=element_blank()) + xlab("Days From January to December")
 }
 
 #this is the stacked barchart took the data and sorted it by county and 
-stackedBarChart <- function(selectedState,selectedCounty){
-  region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+stackedBarChart <- function(selectedYear,selectedState,selectedCounty){
+  region <- subset(allDailyAQI, Year==selectedYear & tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
   barChart <- data.frame(Month = character(),
                          Good = numeric(),
                          Moderate = numeric(),
@@ -82,63 +74,42 @@ stackedBarChart <- function(selectedState,selectedCounty){
   dat <- melt(barChart,id.vars="Month")
   colnames(dat)[2]<-"Quality"
   ggplot(dat,aes(x=Month, y=value,fill=Quality)) + geom_bar(stat="identity") + xlab("Month")+ylab("Days")
+  
 }
 
 #this is the hourly aqi line chart i Divided all the data up and filtered it to only get the average of each hour
 #then combined them all and put them onto a line graph with ggplot. I send that ggplot to a plotyly graph to make it more interactive
 hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
-  hrwind <-hourly_WIND_2018 %>%
-    dplyr::select(Date.Local,Time.Local, County.Name,Sample.Measurement, Parameter.Name) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local,Parameter.Name) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01" & Parameter.Name == "Wind Speed - Resultant")
+  #hrwind <-hourly_WIND_2018 %>%
+  #  dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hroz <- hr_oz_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hroz$Parameter.Name <- "Ozone"
   hrso <- hr_so2_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrso$Parameter.Name <- "SO2"
   hrco <- hr_co_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrco$Parameter.Name <- "CO"
   hrno <- hr_no2_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrno$Parameter.Name <- "NO2"
   hrp2 <- hr_pm2_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrp2$Parameter.Name <- "PM 2.5"
   hrp1 <- hr_pm1_2018 %>%
-    dplyr::select(State.Name,State.Code, County.Code, County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,County.Name,Date.Local) %>%
-    dplyr::summarise(val = mean(Sample.Measurement)) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrp1$Parameter.Name <- "PM 10"
-  hrtemp <- hourly_TEMP_2018 %>%
-    dplyr::select(County.Name, Date.Local, Time.Local, Sample.Measurement) %>%
-    dplyr::group_by(Time.Local,Date.Local,County.Name,Sample.Measurement) %>%
-    dplyr::filter(County.Name=="Cook"& Date.Local =="2018-01-01")
+  hrtemp <- hr_TEMP_2018 %>%
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hrtemp$Parameter.Name <- "Temperature"
   hrtemp$val <- hrtemp$Sample.Measurement
   hrtemp$Sample.Measurement <-NULL
   
-  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso,hrtemp,hrwind)
+  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso)
   
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
   
 }
+
 
