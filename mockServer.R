@@ -10,7 +10,7 @@ source("dataSource.R")
 source("plot.R")
 source("map.R")
 source("heatmap.R")
-source("chart.R")
+source("charts.R")
 
 source("ui.R")
 source("server.R")

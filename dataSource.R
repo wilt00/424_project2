@@ -8,14 +8,15 @@ DATASOURCE <- TRUE
 #################
 ##feather loads##
 #################
-ozoneDF <- read_feather("feather/daily_44201_.feather")
-so2DF <- read_feather("feather/daily_42401_.feather")
-co2DF <- read_feather("feather/daily_42101_.feather")
-no2 <- read_feather("feather/daily_42602_.feather")
-PM25Mass <- read_feather("feather/daily_88101_.feather")
-PM10Mass <- read_feather("feather/daily_81102_.feather")
-wind <- read_feather("feather/daily_WIND_.feather")
-temperature <- read_feather("feather/daily_TEMP_.feather")
+
+# ozoneDF <- read_feather("feather/daily_44201_.feather")
+# so2DF <- read_feather("feather/daily_42401_.feather")
+# co2DF <- read_feather("feather/daily_42101_.feather")
+# no2 <- read_feather("feather/daily_42602_.feather")
+# PM25Mass <- read_feather("feather/daily_88101_.feather")
+# PM10Mass <- read_feather("feather/daily_81102_.feather")
+# wind <- read_feather("feather/daily_WIND_.feather")
+# temperature <- read_feather("feather/daily_TEMP_.feather")
 
 #######################
 ##General Shared data##
