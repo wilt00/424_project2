@@ -10,41 +10,7 @@ library(DT)
 library(reshape)
 library(feather)
 source("dataSource.R")
-hr_oz_2018 <- read_feather("hourly_44201_2018.feather")
-hr_so2_2018 <- read_feather("hourly_42401_2018.feather")
-hr_pm2_2018 <- read_feather("hourly_88101_2018.feather")
-hr_pm1_2018 <- read_feather("hourly_81102_2018.feather")
-hr_no2_2018 <- read_feather("hourly_42602_2018.feather")
-hr_co_2018 <- read_feather("hourly_42101_2018.feather")
-hr_TEMP_2018 <- read_feather("hourly_TEMP_2018.feather")
-allDailyAQI <- read_feather("daily_aqi_by_county_.feather")
-getMonth <- function(month){
-  if(month=='01'){
-    return("January")
-  }else if(month=='02'){
-    return("February")
-  }else if(month=='03'){
-    return("March")
-  }else if(month=='04'){
-    return("April")
-  }else if(month=='05'){
-    return("May")
-  }else if(month=='06'){
-    return("June")
-  }else if(month=='07'){
-    return("July")
-  }else if(month=='08'){
-    return("August")
-  }else if(month=='09'){
-    return("September")
-  }else if(month=='10'){
-    return("October")
-  }else if(month=='11'){
-    return("November")
-  }else{
-    return("December")
-  }
-}
+
 #table aqi in a Dataframe
 table_month_AQI <-function(selectedYear,selectedState,selectedCounty){
   region <- subset(allDailyAQI, Year==selectedYear & tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))

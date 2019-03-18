@@ -6,6 +6,14 @@ HEATMAP.R <- TRUE
 # source("dataSource.R")
 
 ## PREPROCESS
+processDailyPollutant <- function(pdata) {
+  pdata <- dplyr::select(pdata, State.Code, County.Code, X1st.Max.Value, Date.Local)
+  pdata$STATE <- with(pdata, sprintf("%02d", State.Code))
+  pdata$COUNTY <- with(pdata, sprintf("%03d", County.Code))
+  return(pdata)
+}
+
+
 
 processDailyPollutant <- function(pdata) {
   pdata <- dplyr::select(pdata, State.Code, County.Code, X1st.Max.Value, Date.Local)
@@ -15,11 +23,11 @@ processDailyPollutant <- function(pdata) {
 }
 
 daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
-daily_so2 <- processDailyPollutant(read.csv("data/daily_42401_2018.csv"))
-daily_co <- processDailyPollutant(read.csv("data/daily_42101_2018.csv"))
-daily_no2 <- processDailyPollutant(read.csv("data/daily_42602_2018.csv"))
-daily_pm25 <- processDailyPollutant(read.csv("data/daily_88101_2018.csv"))
-daily_pm10 <- processDailyPollutant(read.csv("data/daily_81102_2018.csv"))
+daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
+daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
+daily_no2 <- processDailyPollutant(read.csv("./data/daily_42602_2018.csv"))
+daily_pm25 <- processDailyPollutant(read.csv("./data/daily_88101_2018.csv"))
+daily_pm10 <- processDailyPollutant(read.csv("./data/daily_81102_2018.csv"))
 
 
 getStateName <- function(stateCode) {
@@ -44,7 +52,6 @@ countiesJ@data$COUNTY <- sapply(countiesJ@data$COUNTY, as.character)
 countiesJ@data$StateName <-
   sapply(countiesJ@data$STATE, getStateName)
 countiesDataBkp <- data.frame(countiesJ@data)
-
 
 
 pollutantHeatmap <- function(mapType, month, day) {

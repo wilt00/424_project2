@@ -18,6 +18,18 @@ DATASOURCE <- TRUE
 # wind <- read_feather("feather/daily_WIND_.feather")
 # temperature <- read_feather("feather/daily_TEMP_.feather")
 
+###############
+##Hourly Data##
+##############
+
+hr_oz_2018 <- read_feather("./feather/hourly_44201_2018.feather")
+hr_so2_2018 <- read_feather("./feather/hourly_42401_2018.feather")
+hr_pm2_2018 <- read_feather("./feather/hourly_88101_2018.feather")
+hr_pm1_2018 <- read_feather("./feather/hourly_81102_2018.feather")
+hr_no2_2018 <- read_feather("./feather/hourly_42602_2018.feather")
+hr_co_2018 <- read_feather("./feather/hourly_42101_2018.feather")
+hr_TEMP_2018 <- read_feather("./feather/hourly_TEMP_2018.feather")
+
 #######################
 ##General Shared data##
 #######################
@@ -55,7 +67,7 @@ months <- c(1,2,3,4,5,6,7,8,9,10,11,12)
 ##Daily AQI BY Country##
 ########################
 
-dabc <- read.csv("daily_aqi_by_county_2018.csv")
+allDailyAQI <- read_feather("./feather/daily_aqi_by_county_.feather")
 
 ########################
 ##Annual AQI By County##
