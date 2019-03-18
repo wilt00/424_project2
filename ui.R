@@ -73,8 +73,8 @@ mapTab <- tabPanel(
   "Map",
   value = "mapTab",
   sliderInput(
+    "numCounties",
     label="numCounties",
-    inputId = "num",
     min = 1,
     max = 500,
     value = 100

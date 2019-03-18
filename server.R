@@ -105,6 +105,9 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$multiMap <- renderPlot({
+    write(input$mapType, stderr())
+    write(input$selYear, stderr())
+    write(input$numCounties, stderr())
     (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
   # output$heatMap <- leafletOutput({
