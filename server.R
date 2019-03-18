@@ -11,9 +11,9 @@ server <- shinyServer(function(input, output, session) {
                       selected = "AQITab")
   })
 
-  observeEvent(input$showPolutantsButton, {
+  observeEvent(input$showPollutantsButton, {
     updateTabsetPanel(session, "tabset",
-                      selected = "polutantTab")
+                      selected = "pollutantTab")
   })
 
   observeEvent(input$showMapButton, {

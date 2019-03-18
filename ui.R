@@ -130,14 +130,14 @@ body <- dashboardBody(
                )
         ),
         column(3,
-               selectInput("selState", "State: ", states, selected = "Illinois"),
+               selectInput("selState", "State: ", states, selected = "illinois"),
                selectInput("selCounty", "County: ", getCounties("illinois")),
                actionButton("showAboutModal", "About"),
                draggable = TRUE
         ),
         column(3,
                actionButton("showAQIButton", "AQI"),
-               actionButton("showpollutantsButton","pollutants"),
+               actionButton("showPollutantsButton","Pollutants"),
                actionButton("showMapButton", "Map"),
                actionButton("showTempButton", "Temp")
         )
