@@ -70,6 +70,9 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$pollutantBar <- renderPlot({
+    print(input$selYear)
+    print(input$selState)
+    print(input$selCounty)
     pollutant_bar(input$selYear, input$selState, input$selCounty)
   })
 
@@ -90,7 +93,13 @@ server <- shinyServer(function(input, output, session) {
   })
   output$tableAQI <- shiny::renderDataTable({
     table_month_AQI(input$selState, input$selCounty)
-  })
+  },options = list(
+    columnDefs = list(list(className= 'dt-center', targets=0:6)),
+    pageLength = 12,
+    searching = FALSE,
+    lengthChange = FALSE,
+    rownames= TRUE)
+  )
   output$stackedChartAQI <- renderPlot({
     stackedBarChart(input$selState, input$selCounty)
   })

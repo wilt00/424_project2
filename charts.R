@@ -49,6 +49,7 @@ table_month_AQI <-function(selectedState,selectedCounty){
 
 daily_aqi_line <- function(selectedState, selectedCounty){
   region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+
   region[order(as.Date(region$Date, format="%y-%m-%d")),]
   ggplot(region,aes(x=Date,y=AQI, group=1,label=Defining.Parameter)) + geom_line()+geom_point(color='red') +
     theme(axis.text.x=element_blank(),
@@ -140,5 +141,4 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
   
 }
-
 

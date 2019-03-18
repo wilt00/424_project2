@@ -1,8 +1,5 @@
 library(leaflet)
 library(shinydashboard)
-source("plot.R")
-source("map.R")
-
 
 AQITab <- tabPanel(
   "AQI",
@@ -147,4 +144,5 @@ body <- dashboardBody(
     )
 
     ui
+
 

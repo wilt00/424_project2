@@ -203,9 +203,9 @@ aqi_table <- function(selectedYear,
   colnames(aqi_mx_t_df) <- c("Days")
 
   # Clean up names
-  rownames(aqi_mx_t_df) <- sapply(rownames(aqi_mx_t_df), function(x){gsub(".", " ", x, fixed=TRUE)})
+  aqi_mx_t_df$Categories <- sapply(rownames(aqi_mx_t_df), function(x){gsub(".", " ", x, fixed=TRUE)})
 
-  return(aqi_mx_t_df[c("Days")])
+  return(aqi_mx_t_df[c("Categories", "Days")])
 }
 
 ### pie chart for each individual pollutant (CO, NO2, Ozone, SO2, PM2.5, PM10)
