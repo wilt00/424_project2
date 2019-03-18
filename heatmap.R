@@ -1,6 +1,14 @@
 library(magrittr)
 
 ## PREPROCESS
+processDailyPollutant <- function(pdata) {
+  pdata <- dplyr::select(pdata, State.Code, County.Code, X1st.Max.Value, Date.Local)
+  pdata$STATE <- with(pdata, sprintf("%02d", State.Code))
+  pdata$COUNTY <- with(pdata, sprintf("%03d", County.Code))
+  return(pdata)
+}
+
+
 
 daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
 daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
@@ -31,13 +39,6 @@ countiesJ@data$COUNTY <- sapply(countiesJ@data$COUNTY, as.character)
 countiesJ@data$StateName <-
   sapply(countiesJ@data$STATE, getStateName)
 countiesDataBkp <- data.frame(countiesJ@data)
-
-processDailyPollutant <- function(pdata) {
-  pdata <- dplyr::select(pdata, State.Code, County.Code, X1st.Max.Value, Date.Local)
-  pdata$STATE <- with(pdata, sprintf("%02d", State.Code))
-  pdata$COUNTY <- with(pdata, sprintf("%03d", County.Code))
-  return(pdata)
-}
 
 pollutantHeatmap <- function(mapType, month, day) {
   data <- switch(mapType,

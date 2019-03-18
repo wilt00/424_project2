@@ -1,6 +1,6 @@
 library(leaflet)
 library(shinydashboard)
-
+library(plotly)
 AQITab <- tabPanel(
   "AQI",
   value = "AQITab",
@@ -144,5 +144,3 @@ body <- dashboardBody(
     )
 
     ui
-
-
