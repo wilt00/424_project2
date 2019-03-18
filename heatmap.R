@@ -2,7 +2,13 @@ library(magrittr)
 
 ## PREPROCESS
 
-dy_oz_2018 <- read.csv("daily_44201_2018.csv")
+daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
+daily_so2 <- processDailyPollutant(read.csv("data/daily_42401_2018.csv"))
+daily_co <- processDailyPollutant(read.csv("data/daily_42101_2018.csv"))
+daily_no2 <- processDailyPollutant(read.csv("data/daily_42602_2018.csv"))
+daily_pm25 <- processDailyPollutant(read.csv("data/daily_88101_2018.csv"))
+daily_pm10 <- processDailyPollutant(read.csv("data/daily_81102_2018.csv"))
+
 
 getStateName <- function(stateCode) {
   if (class(stateCode) == "character") {
@@ -34,12 +40,14 @@ processDailyPollutant <- function(pdata) {
   return(pdata)
 }
 
-
-dyoz <- processDailyPollutant(dy_oz_2018)
-
 pollutantHeatmap <- function(mapType, month, day) {
   data <- switch(mapType,
-                 "Ozone" = dyoz)
+                 "Ozone" = daily_oz,
+                 "SO2" = daily_so2,
+                 "CO" = daily_co,
+                 "NO2" = daily_no2,
+                 "PM2.5" = daily_pm25,
+                 "PM10" = daily_pm10)
   newData <- data.frame(countiesDataBkp)
   countiesJ@data <-
     dplyr::full_join(newData, data, by = c("STATE", "COUNTY"))
@@ -50,7 +58,7 @@ pollutantHeatmap <- function(mapType, month, day) {
       "<strong>%s - %s</strong><br/>%s: %f",
       StateName,
       NAME,
-      "Ozone",
+      mapType,
       val
     )
   ) %>%
