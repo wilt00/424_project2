@@ -1,14 +1,8 @@
 library(shiny)
 
-SERVER.R <- TRUE
-
-# if(!exists("PLOT.R")) source("plot.R")
-# if(!exists("MAP.R")) source("map.R")
-# if(!exists("HEATMAP.R")) source("heatmap.R")
-
-# source("plot.R")
-# source("map.R")
-# source("heatmap.R")
+source("plot.R")
+source("map.R")
+source("heatmap.R")
 
 
 server <- shinyServer(function(input, output, session) {
@@ -94,11 +88,11 @@ server <- shinyServer(function(input, output, session) {
   output$countyMap <- renderLeaflet({
     (mapCounty(input$selState, input$selCounty))
   })
-  output$lineDailyAQI <- renderPlot({
-    daily_aqi_line(input$selState, input$selCounty)
+  output$lineDailyAQI <- renderPlotly({
+    ggplotly(daily_aqi_line(input$selYear,input$selState, input$selCounty))
   })
   output$tableAQI <- shiny::renderDataTable({
-    table_month_AQI(input$selState, input$selCounty)
+    table_month_AQI(input$selYear,input$selState, input$selCounty)
   },options = list(
     columnDefs = list(list(className= 'dt-center', targets=0:6)),
     pageLength = 12,
@@ -107,7 +101,7 @@ server <- shinyServer(function(input, output, session) {
     rownames= TRUE)
   )
   output$stackedChartAQI <- renderPlot({
-    stackedBarChart(input$selState, input$selCounty)
+    stackedBarChart(input$selYear,input$selState, input$selCounty)
   })
 
   output$multiMap <- renderPlot({

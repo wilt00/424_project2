@@ -1,12 +1,6 @@
 library(leaflet)
 library(shinydashboard)
 
-UI.R <- TRUE
-
-# if(!exists("DATASOURCE.R")) source("dataSource.R")
-# source("dataSource.R")
-
-
 AQITab <- tabPanel(
   "AQI",
   value = "AQITab",
@@ -100,7 +94,7 @@ tempTab <- tabPanel(
   "Temp",
   value = "tempTab",
   splitLayout(
-  plotOutput("lineDailyAQI"),
+  plotlyOutput("lineDailyAQI"),
   plotOutput("tableAQI"),
   plotOutput("stackedChartAQI")
   )
@@ -128,7 +122,7 @@ body <- dashboardBody(
                sliderInput(
                  "selYear",
                  label = h3("Year: "),
-                 min = 1990,
+                 min = 1980,
                  max = 2018,
                  value = 1,
                  sep = ""
@@ -150,5 +144,4 @@ body <- dashboardBody(
     )
 
     ui
-
 
