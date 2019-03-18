@@ -80,7 +80,7 @@ mapTab <- tabPanel(
   ),
   splitLayout(
     dataTableOutput("pollutantTable"),
-    leafletOutput("multiMap")
+    plotOutput("multiMap")
   ),
   selectInput(
     "mapType",
