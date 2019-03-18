@@ -1,12 +1,18 @@
+library(shiny)
 
-library(shiny);
+source("plot.R")
+source("map.R")
+source("heatmap.R")
+
 
 server <- shinyServer(function(input, output, session) {
   observe({
     countyList = getCounties(input$selState)
     # Update list of counties on state changed
-    updateSelectInput(session,"selCounty",choices = countyList, selected = head(countyList, 1))
-
+    updateSelectInput(session,
+                      "selCounty",
+                      choices = countyList,
+                      selected = head(countyList, 1))
   })
 
   output$aqiPie <- renderPlot({
@@ -17,7 +23,7 @@ server <- shinyServer(function(input, output, session) {
   })
   output$aqiTable <- shiny::renderDataTable({
     aqi_table(input$selYear, input$selState, input$selCounty)
-  }, options=list(pageLength=6, dom = 't'))
+  }, options = list(pageLength = 6, dom = 't'))
 
   output$coPie <- renderPlot({
     pollutant_pie(input$selYear, input$selState, input$selCounty, "CO")
@@ -44,6 +50,9 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$pollutantBar <- renderPlot({
+    print(input$selYear)
+    print(input$selState)
+    print(input$selCounty)
     pollutant_bar(input$selYear, input$selState, input$selCounty)
   })
 
@@ -60,34 +69,45 @@ server <- shinyServer(function(input, output, session) {
     (mapCounty(input$selState, input$selCounty))
   })
   output$lineDailyAQI <- renderPlot({
-    daily_aqi_line(input$selState, input$selCOunty)
+    daily_aqi_line(input$selState, input$selCounty)
   })
   output$tableAQI <- shiny::renderDataTable({
-    table_month_AQI(input$selState, input$selCOunty)
-  })
+    table_month_AQI(input$selState, input$selCounty)
+  },options = list(
+    columnDefs = list(list(className= 'dt-center', targets=0:6)),
+    pageLength = 12,
+    searching = FALSE,
+    lengthChange = FALSE,
+    rownames= TRUE)
+  )
   output$stackedChartAQI <- renderPlot({
-    stackedBarChart(input$selState, input$selCOunty)
+    stackedBarChart(input$selState, input$selCounty)
   })
 
-  output$multiMap <- renderLeaflet({
-    (worstXCountiesMap(input$selYear, input$numCounties, input$mapType))
+  output$multiMap <- renderPlot({
+    (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
+  # output$heatMap <- leafletOutput({
+  #   #pollutantHeatmap(input$mapType, )
+  # })
 
   # About dialog
   observeEvent(input$showAboutModal, {
-    showModal(modalDialog(
-      title="About this Page",
-      p("Author: Dylan Vo, Wilfried Bedu, Will Toher"),
-      p("Data Source: United States Environmental Protection Agency"),
-      p("Libraries Used: "),
-      p("- Shiny - Presentation"),
-      p("- ggplot2 - Plotting"),
-      p("- Dplyr - Data grouping"),
-      p("- Purrr - Functional mapping between vectors"),
-      p("- Leaflet - Mapping"),
-      p("Color Palette adapted from graphiq.com"),
-      easyClose = TRUE
-    ))
+    showModal(
+      modalDialog(
+        title = "About this Page",
+        p("Author: Dylan Vo, Wilfried Bedu, Will Toher"),
+        p("Data Source: United States Environmental Protection Agency"),
+        p("Libraries Used: "),
+        p("- Shiny - Presentation"),
+        p("- ggplot2 - Plotting"),
+        p("- Dplyr - Data grouping"),
+        p("- Purrr - Functional mapping between vectors"),
+        p("- Leaflet - Mapping"),
+        p("Color Palette adapted from graphiq.com"),
+        easyClose = TRUE
+      )
+    )
   })
 })
 

@@ -1,6 +1,4 @@
 library(leaflet)
-source("plot.R")
-source("map.R")
 
 countiesInitial <- getCounties("Illinois")
 
@@ -17,7 +15,7 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                         value = 1,
                         sep = ""
                       ),
-                      selectInput("selState", "State: ", states, selected = "Illinois"),
+                      selectInput("selState", "State: ", states, selected = "illinois"),
                       selectInput("selCounty", "County: ", getCounties("illinois")),
                       actionButton("showAboutModal", "About")
                     ),
@@ -63,10 +61,11 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                           "Map",
                           leafletOutput("countyMap"),
                           dataTableOutput("pollutantTable"),
-                          leafletOutput("multiMap"),
+                          plotOutput("multiMap"),
                           sliderInput(
+                            "numCounties",
                             label="numCounties",
-                            inputId = "num",
+                            # inputId = "numCounties",
                             min = 1,
                             max = 500,
                             value = 100
@@ -76,7 +75,8 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                             "Map: ",
                             c("AQI", "CO", "NO2", "SO2", "Ozone", "PM2.5", "PM10"),
                             selected = "AQI"
-                          )
+                          ),
+                          leafletOutput("heatMap")
                         ),
                         tabPanel("Temp",
                                  splitLayout(
