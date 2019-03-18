@@ -1,4 +1,5 @@
 library(feather)
+library(purrr)
 
 #repository of shared datasources and functions
 #all read values should be done here
@@ -46,13 +47,14 @@ states <- sapply(unique(map_data_states$region), as.character)
 counties <- ggplot2::map_data("county")
 
 visualStates <- sapply(states, capitalizeEachWord)
+unname(visualStates)
 
 #returns counties on a given state
 getCounties <- function(selectedState) {
   counties_by_state <- subset(counties, counties$region == tolower(selectedState), select = (subregion))
-  unique(counties_by_state$subregion) %>%
-    map(as.character) %>%
-    map(capitalizeEachWord)
+  counties_out <- sapply(sapply(unique(counties_by_state$subregion), as.character), capitalizeEachWord)
+  unname(counties_out)
+  counties_out
 }
 
 #function to convert month number to a name
