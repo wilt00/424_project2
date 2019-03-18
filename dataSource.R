@@ -3,8 +3,6 @@ library(feather)
 #repository of shared datasources and functions
 #all read values should be done here
 
-DATASOURCE <- TRUE
-
 capitalizeEachWord <- function(str) {
   if (identical(str, character(0))) return(str)
 

@@ -3,8 +3,6 @@ library(dplyr)
 library(purrr)
 library(leaflet)
 
-PLOT.R <- TRUE
-
 # if(!exists("DATASOURCE.R")) source("dataSource.R")
 # source("dataSource.R")
 

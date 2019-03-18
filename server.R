@@ -1,9 +1,8 @@
 library(shiny)
 
-source("plot.R")
-source("map.R")
-source("heatmap.R")
-
+# source("plot.R")
+# source("map.R")
+# source("heatmap.R")
 
 server <- shinyServer(function(input, output, session) {
   observeEvent(input$showAQIButton, {
@@ -92,6 +91,7 @@ server <- shinyServer(function(input, output, session) {
     ggplotly(daily_aqi_line(input$selYear,input$selState, input$selCounty))
   })
   output$tableAQI <- shiny::renderDataTable({
+    write("tableAQI", stderr())
     table_month_AQI(input$selYear,input$selState, input$selCounty)
   },options = list(
     columnDefs = list(list(className= 'dt-center', targets=0:6)),
@@ -101,6 +101,7 @@ server <- shinyServer(function(input, output, session) {
     rownames= TRUE)
   )
   output$stackedChartAQI <- renderPlot({
+    write("chartAQI", stderr())
     stackedBarChart(input$selYear,input$selState, input$selCounty)
   })
 

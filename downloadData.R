@@ -4,8 +4,6 @@
 library(feather)
 library(magrittr)
 
-DOWNLOADDATA.R <- TRUE
-
 
 initLog <- function(){
   cat("type, code, message",file="downloadData.log",sep="\n")
