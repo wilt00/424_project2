@@ -1,9 +1,11 @@
 # I used this supplemental file to download the CSVs.
 # It is not used by the Shiny application.
 
-
 library(feather)
 library(magrittr)
+
+DOWNLOADDATA.R <- TRUE
+
 
 initLog <- function(){
   cat("type, code, message",file="downloadData.log",sep="\n")

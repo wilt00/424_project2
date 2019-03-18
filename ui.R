@@ -1,6 +1,11 @@
 library(leaflet)
 library(shinydashboard)
 
+UI.R <- TRUE
+
+if(!exists("DATASOURCE.R")) source("dataSource.R")
+
+
 AQITab <- tabPanel(
   "AQI",
   value = "AQITab",

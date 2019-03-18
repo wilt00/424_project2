@@ -1,5 +1,7 @@
 library(magrittr)
 
+HEATMAP.R <- TRUE
+
 ## PREPROCESS
 
 daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))

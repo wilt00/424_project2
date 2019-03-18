@@ -1,10 +1,13 @@
 library(ggplot2)
 library(ggmap)
-
 library(dplyr)
 library(leaflet)
 library(rgdal)
-source("dataSource.R")
+
+MAP.R <- TRUE
+
+if(!exists("DATASOURCE.R")) source("dataSource.R")
+
 
 getCol <- function(mapType) {
   switch(

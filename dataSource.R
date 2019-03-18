@@ -3,6 +3,8 @@ library(feather)
 #repository of shared datasources and functions
 #all read values should be done here
 
+DATASOURCE <- TRUE
+
 #################
 ##feather loads##
 #################

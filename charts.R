@@ -8,7 +8,10 @@ library(ggrepel)
 library(plotly)
 library(DT)
 library(reshape)
-source("dataSource.R")
+
+if(!exists("DATASOURCE.R")) source("dataSource.R")
+
+
 hr_oz_2018 <- read.csv("hourly_44201_2018.csv")
 hr_so2_2018 <- read.csv("hourly_42401_2018.csv")
 hr_co_2018 <- read.csv("hourly_42101_2018.csv")
@@ -56,7 +59,7 @@ daily_aqi_line <- function(selectedState, selectedCounty){
           axis.ticks.x=element_blank()) + xlab("Days From January to December")
 }
 
-#this is the stacked barchart took the data and sorted it by county and 
+#this is the stacked barchart took the data and sorted it by county and
 stackedBarChart <- function(selectedState,selectedCounty){
   region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
   barChart <- data.frame(Month = character(),
@@ -135,10 +138,10 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   hrtemp$Parameter.Name <- "Temperature"
   hrtemp$val <- hrtemp$Sample.Measurement
   hrtemp$Sample.Measurement <-NULL
-  
+
   allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso,hrtemp,hrwind)
-  
+
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
-  
+
 }
 

@@ -2,7 +2,10 @@ library(ggplot2)
 library(dplyr)
 library(purrr)
 library(leaflet)
-source("dataSource.R")
+
+PLOT.R <- TRUE
+
+if(!exists("DATASOURCE.R")) source("dataSource.R")
 
 # Define function to retrieve unique counties for a given state
 getCounties <- function(selectedState) {
