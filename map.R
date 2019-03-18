@@ -46,7 +46,7 @@ worstCountiesMap <- function(mapType, selectedYear, numDisplayed) {
     geom_polygon(color = "black", fill = "gray") +
     geom_polygon(data = maxValsCounties,
                  aes_string(fill = mapDataCol),
-                 color = "white") +
+                 color = "white", size=0.2) +
     coord_fixed(1.3) +
     guides(fill=guide_colorbar(title=paste(mapType, "Concentration"), color=colorbar)) +
     theme(axis.line=element_blank(),

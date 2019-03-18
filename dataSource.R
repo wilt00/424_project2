@@ -57,9 +57,9 @@ months <- c(1,2,3,4,5,6,7,8,9,10,11,12)
 
 dabc <- read.csv("daily_aqi_by_county_2018.csv")
 
-#########################
-##Annual AQI By Country##
-#########################
+########################
+##Annual AQI By County##
+########################
 # Read in Average AQI By County info from files
 aabc_files <- list.files('./aabc', full.names=TRUE)
 aabc_data <- lapply(aabc_files, read.csv)
