@@ -82,8 +82,7 @@ ui <- shinyUI(fluidPage(title = "US Air Quality, 1980-2018",
                                  splitLayout(
                                    plotlyOutput("lineDailyAQI"),
                                    dataTableOutput("tableAQI"),
-                                   plotOutput("stackedChartAQI"),
-                                   plotlyOutput("lineHourlyAQI")
+                                   plotOutput("stackedChartAQI")
                                  ))
                       )
                     )
