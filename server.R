@@ -31,7 +31,7 @@ server <- shinyServer(function(input, output, session) {
     updateSelectInput(session,
                       "selCounty",
                       choices = countyList,
-                      selected = head(countyList, 1))
+                      selected = head(countyList, 2))
   })
 
   output$aqiPie <- renderPlot({
@@ -111,8 +111,8 @@ server <- shinyServer(function(input, output, session) {
     write(input$numCounties, stderr())
     (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
-  # output$heatMap <- leafletOutput({
-  #   #pollutantHeatmap(input$mapType, )
+  # output$heatmap <- renderLeaflet({
+  #   (pollutantHeatmap(input$mapType, input$heatmapDay))
   # })
 
   # About dialog
