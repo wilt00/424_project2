@@ -47,13 +47,13 @@ states <- sapply(unique(map_data_states$region), as.character)
 counties <- ggplot2::map_data("county")
 
 visualStates <- sapply(states, capitalizeEachWord)
-unname(visualStates)
+visualStates <- unname(visualStates)
 
 #returns counties on a given state
 getCounties <- function(selectedState) {
   counties_by_state <- subset(counties, counties$region == tolower(selectedState), select = (subregion))
   counties_out <- sapply(sapply(unique(counties_by_state$subregion), as.character), capitalizeEachWord)
-  unname(counties_out)
+  counties_out <- unname(counties_out)
   counties_out
 }
 
