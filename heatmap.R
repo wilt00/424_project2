@@ -13,15 +13,6 @@ processDailyPollutant <- function(pdata) {
   return(pdata)
 }
 
-
-
-processDailyPollutant <- function(pdata) {
-  pdata <- dplyr::select(pdata, State.Code, County.Code, X1st.Max.Value, Date.Local)
-  pdata$STATE <- with(pdata, sprintf("%02d", State.Code))
-  pdata$COUNTY <- with(pdata, sprintf("%03d", State.Code))
-  return(pdata)
-}
-
 daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
 daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
 daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
@@ -39,11 +30,7 @@ getStateName <- function(stateCode) {
   if (identical(lname, character(0))) {
     return("??")
   }
-  aname <- strsplit(lname, " ")[[1]]
-  paste(toupper(substring(aname, 1, 1)),
-        substring(aname, 2),
-        sep = "",
-        collapse = " ")
+  capitalizeEachWord(lname)
 }
 
 countiesJ <- rgdal::readOGR("gz_2010_us_050_00_20m.json")

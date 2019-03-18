@@ -130,8 +130,8 @@ body <- dashboardBody(
                )
         ),
         column(3,
-               selectInput("selState", "State: ", states, selected = "illinois"),
-               selectInput("selCounty", "County: ", getCounties("illinois")),
+               selectInput("selState", "State: ", visualStates, selected = "Illinois"),
+               selectInput("selCounty", "County: ", getCounties("Illinois")),
                actionButton("showAboutModal", "About"),
                draggable = TRUE
         ),

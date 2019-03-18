@@ -5,6 +5,16 @@ library(feather)
 
 DATASOURCE <- TRUE
 
+capitalizeEachWord <- function(str) {
+  if (identical(str, character(0))) return(str)
+
+  str_arr <- strsplit(str, " ")[[1]]
+  paste(toupper(substring(str_arr, 1, 1)),
+        substring(str_arr, 2),
+        sep = "",
+        collapse = " ")
+}
+
 #################
 ##feather loads##
 #################
@@ -37,10 +47,14 @@ map_data_states <- ggplot2::map_data("state")
 states <- sapply(unique(map_data_states$region), as.character)
 counties <- ggplot2::map_data("county")
 
+visualStates <- sapply(states, capitalizeEachWord)
+
 #returns counties on a given state
 getCounties <- function(selectedState) {
-  counties_by_state <- subset(counties, counties$region == selectedState ,select = (subregion))
-  return(sapply(unique(counties_by_state$subregion), as.character))
+  counties_by_state <- subset(counties, counties$region == tolower(selectedState), select = (subregion))
+  unique(counties_by_state$subregion) %>%
+    map(as.character) %>%
+    map(capitalizeEachWord)
 }
 
 #function to convert month number to a name
