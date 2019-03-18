@@ -2,9 +2,13 @@ library(shiny)
 
 SERVER.R <- TRUE
 
-if(!exists("PLOT.R")) source("plot.R")
-if(!exists("MAP.R")) source("map.R")
-if(!exists("HEATMAP.R")) source("heatmap.R")
+# if(!exists("PLOT.R")) source("plot.R")
+# if(!exists("MAP.R")) source("map.R")
+# if(!exists("HEATMAP.R")) source("heatmap.R")
+
+# source("plot.R")
+# source("map.R")
+# source("heatmap.R")
 
 
 server <- shinyServer(function(input, output, session) {

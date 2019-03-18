@@ -3,8 +3,8 @@ library(leaflet)
 
 APP.R <- TRUE
 
-if(!exists("PLOT.R")) source("plot.R")
-
+# if(!exists("PLOT.R")) source("plot.R")
+source("plot.R")
 
 countiesInitial <- getCounties("Illinois")
 

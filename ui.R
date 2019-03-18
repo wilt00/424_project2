@@ -3,7 +3,8 @@ library(shinydashboard)
 
 UI.R <- TRUE
 
-if(!exists("DATASOURCE.R")) source("dataSource.R")
+# if(!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 
 AQITab <- tabPanel(
@@ -127,7 +128,7 @@ body <- dashboardBody(
                sliderInput(
                  "selYear",
                  label = h3("Year: "),
-                 min = 1980,
+                 min = 1990,
                  max = 2018,
                  value = 1,
                  sep = ""

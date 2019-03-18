@@ -6,11 +6,21 @@ library(rgdal)
 
 MAP.R <- TRUE
 
-if(!exists("DATASOURCE.R")) source("dataSource.R")
+# if(!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 
-getCol <- function(mapType) {
-  switch(
+worstCountiesMap <- function(mapType, selectedYear, numDisplayed) {
+
+  datasource <- aabc %>% filter(Year==selectedYear)
+
+  # If numDisplayed < 0, show all rows
+  # Otherwise, ensure we don't try to display more rows than exist
+  n <- ifelse(numDisplayed < 0,
+              nrow(datasource),
+              min(numDisplayed, nrow(datasource)))
+
+  mapDataCol <- switch(
     mapType,
     "AQI" = "pctBadDays",
     "Ozone" = "Days.Ozone",
@@ -20,19 +30,6 @@ getCol <- function(mapType) {
     "PM2.5" = "Days.PM2.5",
     "PM10" = "Days.PM10"
   )
-}
-
-worstCountiesMap <- function(mapType, selectedYear, numDisplayed) {
-  # TODO: filter on year
-  datasource <- aabc
-
-  # If numDisplayed < 0, show all rows
-  # Otherwise, ensure we don't try to display more rows than exist
-  n <- ifelse(numDisplayed < 0,
-              nrow(datasource),
-              min(numDisplayed, nrow(datasource)))
-
-  mapDataCol <- getCol(mapType)
 
   # with(aqiavg, order(mapDataCol)) gets indices of rows in datasource,
   # ordered by mapDataCol, descending
@@ -51,6 +48,16 @@ worstCountiesMap <- function(mapType, selectedYear, numDisplayed) {
                  aes_string(fill = mapDataCol),
                  color = "white") +
     coord_fixed(1.3) +
-    guides(fill = FALSE) +
-    theme_nothing()
+    guides(fill=guide_colorbar(title=paste(mapType, "Concentration"), color=colorbar)) +
+    theme(axis.line=element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),
+          panel.background=element_blank(),
+          panel.border=element_blank(),
+          panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),
+          plot.background=element_blank())
 }

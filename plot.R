@@ -5,7 +5,8 @@ library(leaflet)
 
 PLOT.R <- TRUE
 
-if(!exists("DATASOURCE.R")) source("dataSource.R")
+# if(!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 # Define function to retrieve unique counties for a given state
 getCounties <- function(selectedState) {

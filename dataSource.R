@@ -1,5 +1,5 @@
-library(mapdata)
 library(feather)
+
 #repository of shared datasources and functions
 #all read values should be done here
 
@@ -17,13 +17,12 @@ PM10Mass <- read_feather("feather/daily_81102_.feather")
 wind <- read_feather("feather/daily_WIND_.feather")
 temperature <- read_feather("feather/daily_TEMP_.feather")
 
-
 #######################
 ##General Shared data##
 #######################
-map_data_states <- map_data("state")
+map_data_states <- ggplot2::map_data("state")
 states <- sapply(unique(map_data_states$region), as.character)
-counties <- map_data("county")
+counties <- ggplot2::map_data("county")
 
 #returns counties on a given state
 getCounties <- function(selectedState) {
@@ -57,7 +56,6 @@ months <- c(1,2,3,4,5,6,7,8,9,10,11,12)
 
 dabc <- read.csv("daily_aqi_by_county_2018.csv")
 
-
 #########################
 ##Annual AQI By Country##
 #########################
@@ -65,7 +63,6 @@ dabc <- read.csv("daily_aqi_by_county_2018.csv")
 aabc_files <- list.files('./aabc', full.names=TRUE)
 aabc_data <- lapply(aabc_files, read.csv)
 aabc <- do.call(rbind, aabc_data)
-#aabc <- read.csv("./aabc/annual_aqi_by_county_2018.csv")
 aabc$region <- with(aabc, tolower(State))
 aabc$subregion <- with(aabc, tolower(County))
 aabc$pctBadDays =

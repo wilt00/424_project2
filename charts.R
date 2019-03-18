@@ -9,7 +9,8 @@ library(plotly)
 library(DT)
 library(reshape)
 
-if(!exists("DATASOURCE.R")) source("dataSource.R")
+# if(!exists("DATASOURCE.R")) source("dataSource.R")
+# source("dataSource.R")
 
 
 hr_oz_2018 <- read.csv("hourly_44201_2018.csv")
