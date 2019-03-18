@@ -6,11 +6,24 @@ source("heatmap.R")
 
 
 server <- shinyServer(function(input, output, session) {
+  observeEvent(input$showAQIButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "AQITab")
+  })
+
+  observeEvent(input$showPolutantsButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "polutantTab")
+  })
 
   observeEvent(input$showMapButton, {
-    print("showMap")
     updateTabsetPanel(session, "tabset",
                       selected = "mapTab")
+  })
+
+  observeEvent(input$showTempButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "tempTab")
   })
 
   observe({
@@ -57,9 +70,6 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$pollutantBar <- renderPlot({
-    print(input$selYear)
-    print(input$selState)
-    print(input$selCounty)
     pollutant_bar(input$selYear, input$selState, input$selCounty)
   })
 

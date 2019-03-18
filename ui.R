@@ -6,15 +6,17 @@ source("map.R")
 
 AQITab <- tabPanel(
   "AQI",
+  value = "AQITab",
   splitLayout(
-    div(
-      h3("Air Quality by Day"),
-      plotOutput("aqiPie")
+    tags$div(
+      h3("Air Quality by Day")
     ),
-    dataTableOutput("aqiTable")
+    plotOutput("aqiPie"),
+    dataTableOutput("aqiTable"),
+    plotOutput("aqiBar")
   ),
-  splitLayout(h3("Number of Days with Air Quality"),
-              plotOutput("aqiBar"),
+  #TODO find out what this is and where titles should be
+  fluidRow(
               h3("County AQI Over Time"),
               plotOutput("aqiLine")
   )
@@ -22,34 +24,50 @@ AQITab <- tabPanel(
 
 polutantTab <- tabPanel(
   "Pollutants",
-  splitLayout(
+  value = "polutantTab",
+  fluidRow(
     column(
-      6,
+      2,
+      h3("Selected Region"),
+      leafletOutput("countyMap")
+    ),
+    column(
+      5,
       h3("Majority Daily Pollutant Proportion Over Time For County"),
       plotOutput("pollutantLine")
     ),
     column(
-      6,
+      5,
       h3("Number of Days with Majority Pollutant"),
       plotOutput("pollutantBar")
     )
   ),
   h2("Proportion of Days with Majority Pollutant"),
   splitLayout(
-    leafletOutput("countyMap"),
-    h4("Carbon Monoxide"),
-    plotOutput("coPie"),
-    h4("Nitrogen Dioxide"),
-    h4("Ozone"),
-    plotOutput("no2Pie"),
-    h4("2.5 Micron Particulates"),
-    plotOutput("ozonePie"),
-    h4("10 Micron Particulates"),
-    plotOutput("pm25Pie"),
-    h4("10 Micron Particulates"),
-    plotOutput("pm10Pie"),
-    h4("Sulfur Dioxide"),
-    plotOutput("so2Pie")
+    tags$div(
+      h4("Carbon Monoxide"),
+      plotOutput("coPie")
+    ),
+    tags$div(
+      h4("Nitrogen Dioxide"),
+      plotOutput("no2Pie")
+    ),
+    tags$div(
+      h4("Ozone"),
+      plotOutput("ozonePie")
+    ),
+    tags$div(
+      h4("2.5 Micron Particulates"),
+      plotOutput("pm25Pie")
+    ),
+    tags$div(
+      h4("10 Micron Particulates"),
+      plotOutput("pm10Pie")
+    ),
+    tags$div(
+      h4("Sulfur Dioxide"),
+      plotOutput("so2Pie")
+    )
   )
 )
 
@@ -77,6 +95,7 @@ mapTab <- tabPanel(
 
 tempTab <- tabPanel(
   "Temp",
+  value = "tempTab",
   splitLayout(
   plotOutput("lineDailyAQI"),
   plotOutput("tableAQI"),
@@ -118,7 +137,7 @@ body <- dashboardBody(
                actionButton("showAboutModal", "About"),
                draggable = TRUE
         ),
-        column(6,
+        column(3,
                actionButton("showAQIButton", "AQI"),
                actionButton("showPolutantsButton","Polutants"),
                actionButton("showMapButton", "Map"),
