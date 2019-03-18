@@ -1,4 +1,5 @@
 library(magrittr)
+library(feather)
 
 # if (!exists("DATASOURCE.R")) source("dataSource.R")
 # source("dataSource.R")
@@ -11,12 +12,19 @@ processDailyPollutant <- function(pdata) {
   return(pdata)
 }
 
-daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
-daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
-daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
-daily_no2 <- processDailyPollutant(read.csv("./data/daily_42602_2018.csv"))
-daily_pm25 <- processDailyPollutant(read.csv("./data/daily_88101_2018.csv"))
-daily_pm10 <- processDailyPollutant(read.csv("./data/daily_81102_2018.csv"))
+# daily_oz <- processDailyPollutant(read.csv("./data/daily_44201_2018.csv"))
+# daily_so2 <- processDailyPollutant(read.csv("./data/daily_42401_2018.csv"))
+# daily_co <- processDailyPollutant(read.csv("./data/daily_42101_2018.csv"))
+# daily_no2 <- processDailyPollutant(read.csv("./data/daily_42602_2018.csv"))
+# daily_pm25 <- processDailyPollutant(read.csv("./data/daily_88101_2018.csv"))
+# daily_pm10 <- processDailyPollutant(read.csv("./data/daily_81102_2018.csv"))
+
+daily_oz <- processDailyPollutant(read_feather("./feather/daily_44201_2018.csv.feather"))
+daily_so2 <- processDailyPollutant(read_feather("./feather/daily_42401_2018.csv.feather"))
+daily_co <- processDailyPollutant(read_feather("./feather/daily_42101_2018.csv.feather"))
+daily_no2 <- processDailyPollutant(read_feather("./feather/daily_42602_2018.csv.feather"))
+daily_pm25 <- processDailyPollutant(read_feather("./feather/daily_88101_2018.csv.feather"))
+daily_pm10 <- processDailyPollutant(read_feather("./feather/daily_81102_2018.csv.feather"))
 
 
 getStateName <- function(stateCode) {
@@ -39,7 +47,7 @@ countiesJ@data$StateName <-
 countiesDataBkp <- data.frame(countiesJ@data)
 
 
-pollutantHeatmap <- function(mapType, month, day) {
+pollutantHeatmap <- function(mapType, date) {
   data <- switch(mapType,
                  "Ozone" = daily_oz,
                  "SO2" = daily_so2,
