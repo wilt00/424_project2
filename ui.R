@@ -72,6 +72,11 @@ pollutantTab <- tabPanel(
 mapTab <- tabPanel(
   "Map",
   value = "mapTab",
+  splitLayout(
+    dataTableOutput("pollutantTable"),
+    plotOutput("multiMap")
+    # leafletOutput("heatmap")
+  ),
   sliderInput(
     "numCounties",
     label="numCounties",
@@ -79,15 +84,18 @@ mapTab <- tabPanel(
     max = 500,
     value = 100
   ),
-  splitLayout(
-    dataTableOutput("pollutantTable"),
-    plotOutput("multiMap")
-  ),
   selectInput(
     "mapType",
     "Map: ",
     c("AQI", "CO", "NO2", "SO2", "Ozone", "PM2.5", "PM10"),
     selected = "AQI"
+  ),
+  dateInput(
+    "heatmapDay",
+    "Day (2018): ",
+    value="2018-01-01",
+    min="2018-01-01",
+    max="2018-12-31"
   )
 )
 
