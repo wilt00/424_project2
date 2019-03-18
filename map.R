@@ -1,206 +1,53 @@
 library(ggplot2)
 library(ggmap)
-library(maps)
-library(mapdata)
+
 library(dplyr)
+library(leaflet)
+library(rgdal)
 source("dataSource.R")
-source("charts.R")
 
-aabc$pctBadDays =
-  with(aabc, (Unhealthy.Days + Very.Unhealthy.Days + Hazardous.Days) / Days.with.AQI)
-
-worstAQICountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-pctBadDays))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="black", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=pctBadDays), color="white") +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
+getCol <- function(mapType) {
+  switch(
+    mapType,
+    "AQI" = "pctBadDays",
+    "Ozone" = "Days.Ozone",
+    "SO2" = "Days.SO2",
+    "NO2" = "Days.NO2",
+    "CO" = "Days.CO",
+    "PM2.5" = "Days.PM2.5",
+    "PM10" = "Days.PM10"
+  )
 }
 
-worstOzoneCountiesMap <- function(selectedYear, numDisplayed) {
-
+worstCountiesMap <- function(mapType, selectedYear, numDisplayed) {
   # TODO: filter on year
+  datasource <- aabc
 
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
+  # If numDisplayed < 0, show all rows
+  # Otherwise, ensure we don't try to display more rows than exist
+  n <- ifelse(numDisplayed < 0,
+              nrow(datasource),
+              min(numDisplayed, nrow(datasource)))
 
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.Ozone))[0:n],]
+  mapDataCol <- getCol(mapType)
 
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
+  # with(aqiavg, order(mapDataCol)) gets indices of rows in datasource,
+  # ordered by mapDataCol, descending
+  # Then we select the first n of those indices,
+  # And and get those rows of datasource, in that order
+  maxVals <- datasource[order(datasource[[mapDataCol]], decreasing = TRUE)[0:n],]
 
   # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
+  maxValsCounties <-
+    inner_join(counties, maxVals, by = c("region", "subregion"))
 
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="black", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.Ozone), color="white") +
+  ggplot(data = map_data_states,
+         mapping = aes(x = long, y = lat, group = group)) +
+    geom_polygon(color = "black", fill = "gray") +
+    geom_polygon(data = maxValsCounties,
+                 aes_string(fill = mapDataCol),
+                 color = "white") +
     coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
-}
-
-worstSO2CountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-   numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.SO2))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="gray", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.SO2)) +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
-}
-
-worstNO2CountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.NO2))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="gray", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.NO2)) +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
-}
-
-worstCOCountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.CO))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="gray", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.CO)) +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
-}
-
-worstPM25CountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.PM2.5))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="gray", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.PM2.5)) +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
-    theme_nothing()
-}
-
-worstPM10CountiesMap <- function(selectedYear, numDisplayed) {
-
-  # TODO: filter on year
-
-  # numDisplayed <- 100
-  # Ensure we don't try to display more rows than exist in aqiavg
-  n <- min(numDisplayed, nrow(aabc))
-
-  # with(aqiavg, order(-x)) gets indices of rows in dataframe aqiavg, ordered by the column "x",
-  # descending
-  # Then we select the first 100 of those, and get those rows of maxaqi, in that order
-  # maxaqi <- aqiavg[with(aqiavg, order(-AQI))[0:100],]
-  maxaqi <- aabc[with(aabc, order(-Days.PM10))[0:n],]
-
-  maxaqi$region <- with(maxaqi, tolower(State))
-  maxaqi$subregion <- with(maxaqi, tolower(County))
-
-  # Use inner_join from dplyr so that order of rows is preserved
-  maxaqicounties <- inner_join(counties, maxaqi, by=c("region","subregion"))
-
-  ggplot(data=map_data_states, mapping=aes(x=long, y=lat, group=group)) +
-    geom_polygon(color="gray", fill="gray") +
-    geom_polygon(data=maxaqicounties, aes(fill=Days.PM10)) +
-    coord_fixed(1.3) +
-    guides(fill=FALSE) +
+    guides(fill = FALSE) +
     theme_nothing()
 }
