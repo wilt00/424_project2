@@ -111,4 +111,3 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
 
 }
-
