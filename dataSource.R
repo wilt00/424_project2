@@ -63,9 +63,9 @@ getMonth <- function(month){
 months <- c(1,2,3,4,5,6,7,8,9,10,11,12)
 
 
-########################
-##Daily AQI BY Country##
-########################
+#######################
+##Daily AQI BY County##
+#######################
 
 allDailyAQI <- read_feather("./feather/daily_aqi_by_county_.feather")
 

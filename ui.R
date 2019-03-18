@@ -20,9 +20,9 @@ AQITab <- tabPanel(
   )
 )
 
-polutantTab <- tabPanel(
+pollutantTab <- tabPanel(
   "Pollutants",
-  value = "polutantTab",
+  value = "pollutantTab",
   fluidRow(
     column(
       2,
@@ -81,7 +81,7 @@ mapTab <- tabPanel(
   ),
   splitLayout(
     dataTableOutput("pollutantTable"),
-    leafletOutput("multiMap")
+    plotOutput("multiMap")
   ),
   selectInput(
     "mapType",
@@ -107,7 +107,7 @@ body <- dashboardBody(
       id = "tabset",
       type = "tabs",
       AQITab,
-      polutantTab,
+      pollutantTab,
       mapTab,
       tempTab
     )
@@ -123,7 +123,7 @@ body <- dashboardBody(
                sliderInput(
                  "selYear",
                  label = h3("Year: "),
-                 min = 1980,
+                 min = 1990,
                  max = 2018,
                  value = 1,
                  sep = ""
@@ -137,7 +137,7 @@ body <- dashboardBody(
         ),
         column(3,
                actionButton("showAQIButton", "AQI"),
-               actionButton("showPolutantsButton","Polutants"),
+               actionButton("showpollutantsButton","pollutants"),
                actionButton("showMapButton", "Map"),
                actionButton("showTempButton", "Temp")
         )
