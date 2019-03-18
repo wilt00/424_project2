@@ -18,53 +18,74 @@ hr_pm1_2018 <- read.csv("hourly_81102_2018.csv")
 hourly_TEMP_2018 <- read.csv("hourly_TEMP_2018.csv")
 hourly_WIND_2018 <- read.csv("hourly_WIND_2018.csv")
 
-barChart <- data.frame(Month = character(),
-                       Good = numeric(),
-                       Moderate = numeric(),
-                       UnhealthyforSensitiveGroups =numeric(),
-                       VeryUnhealthy = numeric(),
-                       Unhealthy = numeric(),
-                       Hazardous = numeric())
-
-for(month in months){
-  monthinLoop <- subset(region,format.Date(Date,"%m")== month)
-  name <- getMonth(month)
-  newRow <- data.frame(Month = name,
-                       Good = nrow(subset(monthinLoop, Category=="Good")),
-                       Moderate = nrow(subset(monthinLoop, Category=="Moderate")),
-                       UnhealthyforSensitiveGroups =nrow(subset(monthinLoop, Category=="Unhealthy for Sensitive Groups")),
-                       VeryUnhealthy= nrow(subset(monthinLoop, Category=="Very Unhealthy")),
-                       Unhealthy= nrow(subset(monthinLoop, Category=="Unhealthy")),
-                       Hazardous=nrow(subset(monthinLoop, Category=="Hazardous")))
-  barChart<- rbind(barChart,newRow)
-}
+#table aqi in a Dataframe
 table_month_AQI <-function(selectedState,selectedCounty){
+  region <- subset(dabc, tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+  barChart <- data.frame(Month = character(),
+                         Good = numeric(),
+                         Moderate = numeric(),
+                         UnhealthyforSensitiveGroups =numeric(),
+                         VeryUnhealthy = numeric(),
+                         Unhealthy = numeric(),
+                         Hazardous = numeric())
+  months <- c('01','02','03','04','05','06','07','08','09','10','11','12')
+  for(month in months){
+    monthinLoop <- subset(region,format.Date(Date,"%m")== month)
+    name <- getMonth(month)
+    newRow <- data.frame(Month = name,
+                         Good = nrow(subset(monthinLoop, Category=="Good")),
+                         Moderate = nrow(subset(monthinLoop, Category=="Moderate")),
+                         UnhealthyforSensitiveGroups =nrow(subset(monthinLoop, Category=="Unhealthy for Sensitive Groups")),
+                         VeryUnhealthy= nrow(subset(monthinLoop, Category=="Very Unhealthy")),
+                         Unhealthy= nrow(subset(monthinLoop, Category=="Unhealthy")),
+                         Hazardous=nrow(subset(monthinLoop, Category=="Hazardous")))
+    barChart<- rbind(barChart,newRow)
+  }
   df <- data.frame(barChart)
-  datatable(df,
-            options = list(
-            columnDefs = list(list(className= 'dt-center', targets=0:6)),
-            pageLength = 12,
-            searching = FALSE,
-            lengthChange = FALSE,
-            rownames= TRUE)
-  )
+  return(df)
 }
 
-#this is the line chart
+#this is the line chart for the daily aqi
+
 daily_aqi_line <- function(selectedState, selectedCounty){
-  region <- subset(dabc,State.Name == "Illinois" &  county.Name== "Cook")
+  region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+
   region[order(as.Date(region$Date, format="%y-%m-%d")),]
   ggplot(region,aes(x=Date,y=AQI, group=1,label=Defining.Parameter)) + geom_line()+geom_point(color='red') +
     theme(axis.text.x=element_blank(),
           axis.ticks.x=element_blank()) + xlab("Days From January to December")
 }
 
-#this is the stacked barchart
-stackedBarChart <- function(selectedCounty,selectedDate){
+#this is the stacked barchart took the data and sorted it by county and 
+stackedBarChart <- function(selectedState,selectedCounty){
+  region <- subset(dabc,tolower(State.Name) == tolower(selectedState) &  tolower(county.Name) == tolower(selectedCounty))
+  barChart <- data.frame(Month = character(),
+                         Good = numeric(),
+                         Moderate = numeric(),
+                         UnhealthyforSensitiveGroups =numeric(),
+                         VeryUnhealthy = numeric(),
+                         Unhealthy = numeric(),
+                         Hazardous = numeric())
+  months <- c('01','02','03','04','05','06','07','08','09','10','11','12')
+  for(month in months){
+    monthinLoop <- subset(region,format.Date(Date,"%m")== month)
+    name <- getMonth(month)
+    newRow <- data.frame(Month = name,
+                         Good = nrow(subset(monthinLoop, Category=="Good")),
+                         Moderate = nrow(subset(monthinLoop, Category=="Moderate")),
+                         UnhealthyforSensitiveGroups =nrow(subset(monthinLoop, Category=="Unhealthy for Sensitive Groups")),
+                         VeryUnhealthy= nrow(subset(monthinLoop, Category=="Very Unhealthy")),
+                         Unhealthy= nrow(subset(monthinLoop, Category=="Unhealthy")),
+                         Hazardous=nrow(subset(monthinLoop, Category=="Hazardous")))
+    barChart<- rbind(barChart,newRow)
+  }
   dat <- melt(barChart,id.vars="Month")
   colnames(dat)[2]<-"Quality"
   ggplot(dat,aes(x=Month, y=value,fill=Quality)) + geom_bar(stat="identity") + xlab("Month")+ylab("Days")
 }
+
+#this is the hourly aqi line chart i Divided all the data up and filtered it to only get the average of each hour
+#then combined them all and put them onto a line graph with ggplot. I send that ggplot to a plotyly graph to make it more interactive
 hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   hrwind <-hourly_WIND_2018 %>%
     dplyr::select(Date.Local,Time.Local, County.Name,Sample.Measurement, Parameter.Name) %>%
@@ -117,6 +138,7 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   
   allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso,hrtemp,hrwind)
   
-  ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line()
+  ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
   
 }
+
