@@ -10,6 +10,10 @@ server <- shinyServer(function(input, output, session) {
                       selected = "AQITab")
   })
 
+  observe({
+    print(input$dateInput)
+  })
+
   observeEvent(input$showPollutantsButton, {
     updateTabsetPanel(session, "tabset",
                       selected = "pollutantTab")
@@ -20,10 +24,17 @@ server <- shinyServer(function(input, output, session) {
                       selected = "mapTab")
   })
 
-  observeEvent(input$showTempButton, {
+  observeEvent(input$showDailyButton, {
     updateTabsetPanel(session, "tabset",
-                      selected = "tempTab")
+                      selected = "dailyTab")
   })
+
+  observeEvent(input$showHourlyButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "hourlyTab")
+  })
+
+
 
   observe({
     countyList = getCounties(input$selState)
@@ -89,6 +100,9 @@ server <- shinyServer(function(input, output, session) {
   })
   output$lineDailyAQI <- renderPlotly({
     ggplotly(daily_aqi_line(input$selYear,input$selState, input$selCounty))
+  })
+  output$hourlyPollutants <- renderPlotly({
+    ggplotly(hourly_aqi_line(input$selState, input$selCounty,input$dateInput))
   })
   output$tableAQI <- shiny::renderDataTable({
     write("tableAQI", stderr())
