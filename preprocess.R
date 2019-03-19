@@ -161,6 +161,9 @@ downloadDailyPolutant <- function(){
 
 main <- function() {
   initLog()
+  dir.create("data")
+  dir.create("archives")
+  dir.create("feather")
   downloadDailyAQI()
   downloadHourlyPolutants()
   downloadHourlyTemp()
