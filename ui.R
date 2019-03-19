@@ -74,7 +74,7 @@ mapTab <- tabPanel(
   value = "mapTab",
   splitLayout(
     shiny::dataTableOutput("pollutantTable"),
-    plotOutput("multiMap"),
+    plotOutput("multiMap")
     # leafletOutput("heatmap")
   ),
   sliderInput(
