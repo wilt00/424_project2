@@ -136,14 +136,17 @@ server <- shinyServer(function(input, output, session) {
       modalDialog(
         title = "About this Page",
         p("Author: Dylan Vo, Wilfried Bedu, Will Toher"),
-        p("Data Source: United States Environmental Protection Agency"),
+        p("Data Sources:"),
+        p("- United States Environmental Protection Agency"),
+        p("- Eric Celeste (https://eric.clst.org/tech/usgeojson/)"),
         p("Libraries Used: "),
         p("- Shiny - Presentation"),
         p("- ggplot2 - Plotting"),
         p("- Dplyr - Data grouping"),
         p("- Purrr - Functional mapping between vectors"),
         p("- Leaflet - Mapping"),
-        p("Color Palette adapted from graphiq.com"),
+        p("Color Palettes adapted from graphiq.com, ggplot2, and viridis"),
+        p("With special thanks to Stack Overflow"),
         easyClose = TRUE
       )
     )
