@@ -106,7 +106,7 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   hrtemp$val <- hrtemp$Sample.Measurement
   hrtemp$Sample.Measurement <-NULL
 
-  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso)
+  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso,hrtemp)
 
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
 
