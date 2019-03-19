@@ -10,6 +10,10 @@ server <- shinyServer(function(input, output, session) {
                       selected = "AQITab")
   })
 
+  observe({
+    print(input$dateInput)
+  })
+
   observeEvent(input$showPollutantsButton, {
     updateTabsetPanel(session, "tabset",
                       selected = "pollutantTab")
@@ -20,10 +24,17 @@ server <- shinyServer(function(input, output, session) {
                       selected = "mapTab")
   })
 
-  observeEvent(input$showTempButton, {
+  observeEvent(input$showDailyButton, {
     updateTabsetPanel(session, "tabset",
-                      selected = "tempTab")
+                      selected = "dailyTab")
   })
+
+  observeEvent(input$showHourlyButton, {
+    updateTabsetPanel(session, "tabset",
+                      selected = "hourlyTab")
+  })
+
+
 
   observe({
     countyList = getCounties(input$selState)

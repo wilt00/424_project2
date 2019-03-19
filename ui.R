@@ -99,16 +99,27 @@ mapTab <- tabPanel(
   )
 )
 
-tempTab <- tabPanel(
-  "Temp",
-  value = "tempTab",
+dailyTab <- tabPanel(
+  "Daily",
+  value = "dailyTab",
   splitLayout(
-  plotlyOutput("lineDailyAQI"),
-  dataTableOutput("tableAQI"),
-  plotOutput("stackedChartAQI")
+    plotlyOutput("lineDailyAQI"),
+    dataTableOutput("tableAQI"),
+    plotOutput("stackedChartAQI")
   )
 )
 
+hourlyTab <- tabPanel(
+  "Hourly Data",
+  value = "hourlyTab",
+  splitLayout(
+    dateInput("dateInput",
+              label = "Select Month and Day to view: ",
+              value = "2018-01-01", min = "2018-01-01",
+              max = "2018-12-01", format = "yyyy-mm-dd",
+              weekstart = 0)
+  )
+)
 
 body <- dashboardBody(
     tabsetPanel(
@@ -117,7 +128,8 @@ body <- dashboardBody(
       AQITab,
       pollutantTab,
       mapTab,
-      tempTab
+      dailyTab,
+      hourlyTab
     )
 )
 
@@ -145,9 +157,10 @@ body <- dashboardBody(
         ),
         column(3,
                actionButton("showAQIButton", "AQI"),
-               actionButton("showPollutantsButton","Pollutants"),
+               actionButton("showPolutantsButton","Polutants"),
                actionButton("showMapButton", "Map"),
-               actionButton("showTempButton", "Temp")
+               actionButton("showHourlyButton", "Hourly"),
+               actionButton("showDailyButton", "Daily")
         )
       )
     )
