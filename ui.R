@@ -89,7 +89,7 @@ mapTab <- tabPanel(
     "Map: ",
     c("AQI", "CO", "NO2", "SO2", "Ozone", "PM2.5", "PM10"),
     selected = "AQI"
-  ),
+  )
   # dateInput(
   #   "heatmapDay",
   #   "Day (2018): ",
@@ -162,8 +162,8 @@ body <- dashboardBody(
                actionButton("showAQIButton", "AQI"),
                actionButton("showPolutantsButton","Polutants"),
                actionButton("showMapButton", "Map"),
-               actionButton("showHourlyButton", "Hourly"),
-               actionButton("showDailyButton", "Daily")
+               actionButton("showDailyButton", "Daily"),
+               actionButton("showHourlyButton", "Hourly")
         )
       )
     )
