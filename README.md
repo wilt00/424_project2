@@ -1,7 +1,6 @@
 webpage and documentation at https://cbedu2.github.io/CS424/Projects/Project2/
 
-# Every Breath You Take
-# CS424 Project2
+# Every Breath You Take | CS424 Project2
 
 Project Link: http://shiny.evl.uic.edu:3838/g5/g5_project2/
 
