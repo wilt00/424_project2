@@ -113,6 +113,9 @@ hourlyTab <- tabPanel(
   "Hourly Data",
   value = "hourlyTab",
   splitLayout(
+    plotlyOutput("hourlyPollutants")
+  ),
+  splitLayout(
     dateInput("dateInput",
               label = "Select Month and Day to view: ",
               value = "2018-01-01", min = "2018-01-01",

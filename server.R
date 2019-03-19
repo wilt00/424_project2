@@ -101,6 +101,9 @@ server <- shinyServer(function(input, output, session) {
   output$lineDailyAQI <- renderPlotly({
     ggplotly(daily_aqi_line(input$selYear,input$selState, input$selCounty))
   })
+  output$hourlyPollutants <- renderPlotly({
+    ggplotly(hourly_aqi_line(input$selState, input$selCounty,input$dateInput))
+  })
   output$tableAQI <- shiny::renderDataTable({
     write("tableAQI", stderr())
     table_month_AQI(input$selYear,input$selState, input$selCounty)

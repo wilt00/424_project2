@@ -83,31 +83,30 @@ hourly_aqi_line <- function(selectedState, selectedCounty, selectedDate){
   #hrwind <-hourly_WIND_2018 %>%
   #  dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
   hroz <- hr_oz_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hroz$Parameter.Name <- "Ozone"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hroz$Parameter.Name <- rep(c("Ozone"), nrow(hroz))
   hrso <- hr_so2_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrso$Parameter.Name <- "SO2"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hrso$Parameter.Name <- rep(c("SO2"), nrow(hrso))
   hrco <- hr_co_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrco$Parameter.Name <- "CO"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hrco$Parameter.Name <- rep(c("CO"), nrow(hrco))
   hrno <- hr_no2_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrno$Parameter.Name <- "NO2"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local)== selectedDate )
+  hrno$Parameter.Name <- rep(c("NO2"), nrow(hrno))
   hrp2 <- hr_pm2_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrp2$Parameter.Name <- "PM 2.5"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hrp2$Parameter.Name <- rep(c("PM 2.5"), nrow(hrp2))
   hrp1 <- hr_pm1_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrp1$Parameter.Name <- "PM 10"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hrp1$Parameter.Name <- rep(c("PM 10"), nrow(hrp1))
   hrtemp <- hr_TEMP_2018 %>%
-    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& Date.Local == selectedDate )
-  hrtemp$Parameter.Name <- "Temperature"
+    dplyr::filter(tolower(State.Name) ==tolower(selectedState) & tolower(County.Name)==tolower(selectedCounty)& str(Date.Local) == selectedDate )
+  hrtemp$Parameter.Name <- rep(c("Temperature"), nrow(hrtemp))
   hrtemp$val <- hrtemp$Sample.Measurement
   hrtemp$Sample.Measurement <-NULL
 
-  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso)
+  allData <- rbind(hrco,hrno,hroz,hrp1,hrp2,hrso, hrtemp)
 
   ggplot(allData,aes(x=Time.Local,y=val,,group=1, color=Parameter.Name)) + geom_line() + xlab("Time") + ylab("Values")
-
 }
