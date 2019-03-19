@@ -67,17 +67,17 @@ pollutantHeatmap <- function(mapType, date) {
       StateName,
       NAME,
       mapType,
-      val
+      X1st.Max.Value
     )
   ) %>%
     lapply(htmltools::HTML)
 
-  pal <- leaflet::colorBin("YlOrRd", domain = countiesJ@data$val)
+  pal <- leaflet::colorBin("YlOrRd", domain = countiesJ@data$X1st.Max.Value)
 
   lbase <- leaflet::leaflet(countiesJ) %>%
     leaflet::setView(-96, 37.8, 4) %>%
     leaflet::addPolygons(
-      fillColor = ~ pal(val),
+      fillColor = ~ pal(X1st.Max.Value),
       weight = 2,
       opacity = 0.4,
       color = "white",
@@ -98,7 +98,7 @@ pollutantHeatmap <- function(mapType, date) {
     ) %>%
     leaflet::addLegend(
       pal = pal,
-      values = ~ val,
+      values = ~ X1st.Max.Value,
       opacity = 0.7,
       position = "bottomleft"
     )
