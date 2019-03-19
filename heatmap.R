@@ -48,15 +48,19 @@ countiesDataBkp <- data.frame(countiesJ@data)
 
 
 pollutantHeatmap <- function(mapType, date) {
+  if (mapType == "AQI") return("Please select a pollutant!")
   data <- switch(mapType,
                  "Ozone" = daily_oz,
                  "SO2" = daily_so2,
                  "CO" = daily_co,
                  "NO2" = daily_no2,
                  "PM2.5" = daily_pm25,
-                 "PM10" = daily_pm10)
+                 "PM10" = daily_pm10,
+                 "AQI" = -1)
 
   newData <- data.frame(countiesDataBkp)
+  print(newData)
+  print(data)
   countiesJ@data <-
     dplyr::full_join(newData, data, by = c("STATE", "COUNTY"))
 

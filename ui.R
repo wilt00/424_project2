@@ -73,8 +73,8 @@ mapTab <- tabPanel(
   "Map",
   value = "mapTab",
   splitLayout(
-    dataTableOutput("pollutantTable"),
-    plotOutput("multiMap")
+    shiny::dataTableOutput("pollutantTable"),
+    plotOutput("multiMap"),
     # leafletOutput("heatmap")
   ),
   sliderInput(
@@ -90,13 +90,13 @@ mapTab <- tabPanel(
     c("AQI", "CO", "NO2", "SO2", "Ozone", "PM2.5", "PM10"),
     selected = "AQI"
   ),
-  dateInput(
-    "heatmapDay",
-    "Day (2018): ",
-    value="2018-01-01",
-    min="2018-01-01",
-    max="2018-12-31"
-  )
+  # dateInput(
+  #   "heatmapDay",
+  #   "Day (2018): ",
+  #   value="2018-01-01",
+  #   min="2018-01-01",
+  #   max="2018-12-31"
+  # )
 )
 
 tempTab <- tabPanel(

@@ -112,6 +112,7 @@ server <- shinyServer(function(input, output, session) {
     (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
   # output$heatmap <- renderLeaflet({
+  #   if (input$mapType == "AQI") return()
   #   (pollutantHeatmap(input$mapType, input$heatmapDay))
   # })
 
