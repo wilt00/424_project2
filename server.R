@@ -126,7 +126,6 @@ server <- shinyServer(function(input, output, session) {
     (worstCountiesMap(input$mapType, input$selYear, input$numCounties))
   })
   # output$heatmap <- renderLeaflet({
-  #   if (input$mapType == "AQI") return()
   #   (pollutantHeatmap(input$mapType, input$heatmapDay))
   # })
 
@@ -136,17 +135,14 @@ server <- shinyServer(function(input, output, session) {
       modalDialog(
         title = "About this Page",
         p("Author: Dylan Vo, Wilfried Bedu, Will Toher"),
-        p("Data Sources:"),
-        p("- United States Environmental Protection Agency"),
-        p("- Eric Celeste (https://eric.clst.org/tech/usgeojson/)"),
+        p("Data Source: United States Environmental Protection Agency"),
         p("Libraries Used: "),
         p("- Shiny - Presentation"),
         p("- ggplot2 - Plotting"),
         p("- Dplyr - Data grouping"),
         p("- Purrr - Functional mapping between vectors"),
         p("- Leaflet - Mapping"),
-        p("Color Palettes adapted from graphiq.com, ggplot2, and viridis"),
-        p("With special thanks to Stack Overflow"),
+        p("Color Palette adapted from graphiq.com"),
         easyClose = TRUE
       )
     )
