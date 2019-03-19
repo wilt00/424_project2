@@ -168,9 +168,4 @@ main <- function() {
   downloadHourlyWind()
 }
 
-if(!interactive()) {
-  main()
-}else{
-  main()
-}
-
+main()
